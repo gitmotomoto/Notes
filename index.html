@@ -537,7 +537,7 @@ Interstellar</div>
 
     let targetName = '';       // Sanitized A-Z uppercase spectator name
     let isArmed = false;       // Performance mode state
-    let letterIdx = 0;         // Current index in targetName
+    let letterIdx = -1;        // -1 when freshly armed (waiting for 1st scroll), then 0..N-1
     let hasScrolledSinceStep = false;
     let readyToAdvance = false;
     let pauseTimer = null;
@@ -678,17 +678,15 @@ Interstellar</div>
     function setArmedState(arm, preserveViewport = true) {
       clearTimeout(pauseTimer);
       hasScrolledSinceStep = false;
-      readyToAdvance = false;
 
       if (arm && targetName.length > 0) {
         isArmed = true;
-        letterIdx = 0;
-        const firstLetter = targetName[0];
-        const pool = buildCycleList(BUCKETS[firstLetter], TOTAL_ROWS);
-        applyWordList(pool, preserveViewport);
+        letterIdx = -1;          // Wait until scrolling resumes to load Letter #1
+        readyToAdvance = true;   // Triggers seamlessly on the first scroll event
       } else {
         isArmed = false;
-        letterIdx = 0;
+        letterIdx = -1;
+        readyToAdvance = false;
         const normalList = buildCycleList(NORMAL_POOL, TOTAL_ROWS);
         applyWordList(normalList, preserveViewport);
       }
@@ -700,7 +698,7 @@ Interstellar</div>
       if (!isArmed) return;
 
       if (letterIdx < targetName.length - 1) {
-        // Move to the next letter of the spectator's name
+        // Load the next letter of the spectator's name off-screen
         letterIdx++;
         const nextLetter = targetName[letterIdx];
         const pool = buildCycleList(BUCKETS[nextLetter], TOTAL_ROWS);
@@ -718,12 +716,11 @@ Interstellar</div>
 
       if (!isArmed) return;
 
-      // If spectator paused 6s to pick/say their word, and now resumes scrolling:
+      // Trigger next batch (or initial Letter #1 right after arming) when scrolling resumes
       if (readyToAdvance) {
         readyToAdvance = false;
         hasScrolledSinceStep = false;
         advanceStep();
-        // If that step disarmed the app, exit early
         if (!isArmed) return;
       }
 
@@ -784,9 +781,9 @@ Interstellar</div>
       pullIndicator.style.opacity = '0';
       pullIndicator.style.transform = 'translate(-50%, -44px)';
 
-      // Only arms if currently disarmed (does NOT disarm if already armed)
+      // Arms silently without changing visible words until scrolling begins
       if (!isArmed && pullDistance >= PULL_THRESHOLD / 2) {
-        setArmedState(true, false);
+        setArmedState(true, true);
       }
       pullDistance = 0;
     });
