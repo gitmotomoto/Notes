@@ -37,7 +37,6 @@
       overflow: hidden;
     }
 
-    /* ================= HOME GRID VIEW ================= */
     #home-view {
       display: flex;
       flex-direction: column;
@@ -124,7 +123,6 @@
       background: #2d2e30;
     }
 
-    /* Authentic Google Keep dark mode note tints */
     .note-card.tint-yellow { background: #5c4b14; border-color: #78621c; }
     .note-card.tint-blue   { background: #1e3a5f; border-color: #284b7a; }
     .note-card.tint-green  { background: #345920; border-color: #44722b; }
@@ -168,7 +166,6 @@
       justify-content: center;
     }
 
-    /* ================= NOTE EDITOR VIEW ================= */
     #note-view {
       display: none;
       flex-direction: column;
@@ -212,7 +209,6 @@
       gap: 4px;
     }
 
-    /* Pull-to-refresh spinner indicator (dark theme) */
     .pull-indicator {
       position: absolute;
       top: 56px;
@@ -295,7 +291,6 @@
       letter-spacing: 0.1px;
     }
 
-    /* Subtle performer-only status dot in extreme bottom-left */
     .armed-pip {
       position: fixed;
       left: 5px;
@@ -322,7 +317,6 @@
 </head>
 <body>
 
-  <!-- ================= VIEW 1: GOOGLE KEEP HOME GRID ================= -->
   <div id="home-view">
     <div class="search-header">
       <div class="search-pill">
@@ -339,7 +333,6 @@
 
     <div class="section-label">Pinned</div>
     <div class="notes-grid" id="pinned-grid" style="flex:0 0 auto; padding-bottom: 6px;">
-      <!-- Primary trick note (always stays visible even while typing in Search) -->
       <div class="note-card" id="open-word-note">
         <div class="card-title">Random Words</div>
         <div class="card-body" id="card-preview">anchor
@@ -400,7 +393,6 @@ Interstellar</div>
     </div>
   </div>
 
-  <!-- ================= VIEW 2: NOTE DETAIL & WORD LIST ================= -->
   <div id="note-view">
     <div class="note-topbar">
       <button class="icon-btn" id="btn-back" aria-label="Back">
@@ -448,17 +440,14 @@ Interstellar</div>
   </div>
 
   <script>
-    // =========================================================================
-    // 1. CURATED MASTER DICTIONARY (Automatically bucketed & verified by 3rd letter)
-    // =========================================================================
     const RAW_WORDS = `
       abacus abandon abbey abdomen ability aboard abolish abound abrasive abroad absence absent absolute absorb abstract absurd abundance academy accent accept access accident acclaim accommodate accompany accomplish accord account accurate accuse achieve acid acoustic acquire acrobat across acting action active actor actual acute adapt addict addition address adequate adhere adjacent adjust admin admire admission admit adopt adult advance advent adventure adverb advertise advice advise advocate aerial affair affect afford afraid after afternoon again against agency agenda agent agile aging agony agree ahead aiding ailment aiming airplane airport aisle alarm album alcohol alert algebra alien align alike alive alley alliance allow alloy allure almond almost alone along aloud alphabet alpine already also altar alter alternate although altitude aluminum always amass amateur amaze amazing amber ambient ambition ambulance ambush amend amenity amid ammonia among amount ample amuse analysis analyst anchor ancient angel anger angle angry animal ankle annex announce annual anonymous answer antenna anthem antique antiquity anxiety anxious apart apathy apology apparatus apparel appeal appear appetite applaud applause apple appliance apply appoint appreciate approach approval approve apricot april apron aquarium aquatic arcade arch architect archive arctic arena argue arid arise arithmetic armor aroma around arrange array arrest arrival arrive arrow arsenal artesian article artifact artificial artist artwork ascend ascent ashamed ashore aside asleep aspect asphalt aspire assault assemble assembly assert assess asset assign assist associate assume assure asteroid asthma astonish athlete atlas atmosphere atom atomic attach attack attain attempt attend attention attitude attorney attract attribute auction audience audio audit auditorium august aunt authentic author authority auto autumn auxiliary available avenue average aviation avoid awake award aware away awesome awful awkward awning axis axle
       babble baboon baby bachelor backbone backdrop background backpack backward bacon bacteria badge badger baffle baggage bailout bakery balance balcony baldness ballad ballet balloon ballot bamboo banana bandage bandit bandwidth banjo banker banner banquet banter baptize bareback barefoot bargain barge barker barley barnacle barometer baron barrel barren barrier barter baseball basement basic basil basin basis basket bassoon batch bathhouse bathrobe bathroom battery battle bayonet beacon beagle beaker beam bearing beast beauty beaver become bedroom bedtime beehive beetle before began beginner beginning behalf behave behavior behind beige being belief believe bellhop bellow belly belong below beltway bench benchmark beneath benefit berry beside bestowal betray better between beverage beware beyond bicycle bidding bigfoot bikeway bilateral billboard billion binary binding binoculars biochemistry biography biology birch birdcage birthday biscuit bishop bison bitter bizarre blackberry blackbird blackboard blacksmith bladder blade blame blandish blanket blast blazer blazing bleach bleak blemish blend bless blindfold blink bliss blizzard blockade blogger blonde bloodhound blossom blouse bluebird blueprint bluff blunder blunt blurb blush boardroom boast boatyard bobbin bobcat bodice bodyguard bogey boilermaker boisterous boldness bologna bolster bombard bonanza bondage bonfire bonnet bonus bookcase bookkeeper booklet bookmark bookshelf bookstore boost booth border boredom borrow botanical botanist bottle bottom boulder bounce boundary bounty bouquet boutique bowling boxcar boxer boxing boycott bracelet bracket braid brainwash brake bramble branch brandish brass bravery breach breadwinner breakaway breakfast breakthrough breastplate breath breathe breeze breezy brewery briar bricklayer bridal bridge brief brigade bright brilliant brimstone bring brisk bristle broadcast broccoli brochure broken bronze brood brook broomstick brother brought brownie browse bruise brunette brush brutal bubble bucket buckle budget buffalo buffet bugle builder building built bulb bulge bulk bulldog bulldozer bullet bulletin bullfrog bumblebee bumper bunch bundle bungalow bunkhouse burden bureau burger burglar burial burlap burnish burrow burst busboy bushel business bustard bustle butcher buttercup butterfly buttermilk button buzzard buzzer buzzing bypass
       cabaret cabbage cabin cabinet cable caboose cactus cadence cadet cafeteria caffeine cagey cajole cajun cakewalk calamity calcium calculate calendar caliber calibrate calico callous calmer calorie camcorder camel cameo camera camouflage campaign campfire camper camphor campus canal canary cancel cancer candid candidate candle candy cane canine canister cannon canoe canopy canvas canyon capable capacity cape capital capitol capsule captain caption captive capture caramel carat caravan carbon carcass cardamom cardboard cardiac cardinal career carefree careful careless cargo caricature carnival carol carpenter carpet carriage carrot carry cartwheel carve cascade cashew cashmere casino casket casserole cassette castaway castle casual catalog catalyst catapult catchup category cater caterpillar cathedral cattle causeway caution cavalier cavalry cavern caviar cavity cease cedar ceiling celebrate celebrity celery celestial cellar cello cement cemetery censor census centaur center centipede central century ceramic cereal ceremony certain certificate certify chainmail chairman chalet chalk chalkboard challenge chamber chameleon champion chance chandelier change channel chant chaos chapel chapter character charcoal charge chariot charity charm chart charter chase chasm chassis chatter cheap cheat checkbook checker checkout checkup cheek cheerfulness cheese cheetah chef chemical chemistry cherry cherub chess chestnut chew chickadee chicken chief childhood childish chili chill chimney chimpanzee chinaware chipmunk chirp chisel chivalry chocolate choice choir choke cholesterol choose chopstick chord chorus chosen chowder chrome chronic chronicle chuckle church churn cider cigar cilantro cinema cinnamon circle circuit circular circulate circumference circus cistern citadel citizen citrus civic civil civilian claim clammy clamp clan clandestine clarify clarinet clarity clash clasp classic classify classroom clatter clause claw clay clean cleanse clear clearance clearing clergy clerk clever click client cliff climate climax climb clinic clip cloak clockwork clone close closet closure cloth clothe clothing cloud clover clown club clump clumsy cluster clutch coach coal coalition coarse coast coastal coat cobbler cobra cobweb cockatoo cockpit coconut cocoon code coffee coffin cogwheel coherent coil coin coincide cold collaborate collapse collar colleague collect college collide collision cologne colonial colony color colossal colt column combat combine combustion comeback comedy comet comfort comic comma command commemorate commence comment commerce commercial commission commit committee commodity common commotion communicate community commute compact companion company compare compass compassion compel compensate compete competent compile complain complete complex complexion complicate compliment comply component compose composite composition compost compound comprehend compress comprise compromise compute computer comrade conceal concede conceive concentrate concept concern concert concession conclude concrete condemn condense condition conduct cone confer conference confess confidence confident confirm conflict conform confront confuse confusion congratulate congress connect conquer conquest conscience conscious consecutive consent consequence conserve consider consist console consonant conspiracy constant constitute construct consult consume contact contain contaminate contemporary contempt content contest context continent continue contract contradict contrary contrast contribute control controversy convenience convention conversation convert convey convict convince convoy cookout cool cooperate coordinate copper copy coral cord corduroy core corkscrew corn corner cornet corona corporal corporate corporation correct correspond corridor corrupt cosmic cosmos costume cottage cotton couch cougar cough council counsel count counter country countryside county couple coupon courage courier course court courtyard cousin cove covenant cover covert cowboy coyote cozy crab crackle cradle craft craftsman cranberry crane crash crate crater crave crawl crayon crazy creak cream create creation creative creator creature credit creed creek creep crescent crest crevice crew cricket crime criminal crimson cringe cripple crisis crisp criterion critic critical criticism critique crocodile crocus croquet crossroad crossword crouch crowbar crowd crown crucial crude cruel cruise crumb crumble crunch crusade crush crust crutch crystal cubby cube cuckoo cucumber cuddle culprit cultivate culture cumbersome cunning cupboard cupid curb cure curiosity curious curl currant current curriculum curry curse curtain curve cushion custard custom customer cutlass cutlery cutoff cycle cyclone cylinder cymbal cypress
       dabble dachshund daffodil dagger daily dainty dairy daisy damage damselfly dance dandelion danger dangle daring darken darkness darling dashboard data database date daughter dawdle daylight dazzle dazzling deacon deadline deadly deafen dealer dealing debate debris debt debut decade decay deceit deceive december decent deception decide decimal decision decisive deck declare decline decode decorate decoration decoy decrease decree dedicate deduce deduct deed deepen deer defeat defect defend defense defensive defer defiance deficient define definite definition deflect deform defraud defy degenerate degrade degree deity deject delay delegate delete deliberate delicate delicious delight deliver delivery delta deluge deluxe demand demeanor democracy democrat demolish demon demonstrate denial denim denote dense density dentist deny depart department departure depend depict deplete deploy deport deposit depot depress deprive depth deputy derail derive descend describe desert deserve design designate designer desire desk desolate despair desperate despite dessert destination destiny destroy destruction detach detail detain detect detective detector detention deter detergent deteriorate determine detour detract devastate develop development device devil devise devote devour devout dewdrop diagnose diagonal diagram dial dialect dialogue diameter diamond diaper diary dice dictate dictionary diesel diet differ difference different difficult diffuse digest digital dignity dijon dilemma dilute dimension diminish dimple diner dinghy dinner dinosaur dioxide diploma diplomat direct direction director directory dirt disable disadvantage disagree disappear disappoint disaster discard discern discharge discipline disclose discomfort disconnect discontinue discount discourage discourse discover discovery discreet discrepancy discretion discuss discussion disease disguise disgust dish dishonest dishwasher disk dislike dismantle dismiss disorder dispatch dispel dispense disperse displace display disposal dispose dispute disregard disrupt dissolve distance distant distill distinct distinguish distort distract distress distribute district disturb ditch dive diverge diverse divide dividend divine division divorce dizzy dock doctor doctrine document dodge doghouse dogma doily dojo dolphin domain dome domestic dominant dominate donate donation donkey donor doodle doom doorstep doorway dosage double doubt dough dove downhill download downpour downtown downward dozen draft dragon dragonfly drain drama dramatic drape drastic draw drawer drawing dread dream dreary drench dress dresser dribble drift driftwood drill drink drip drive driveway drizzle drone droop drop drought drove drown drowsy drudge drumstick drunk dry dual dub duckling duct duel duet duke dull dummy dump dumpling dune dungeon duplicate duplex durable duration during dusk dust duty dwarf dwell dwindling dye dynamic dynasty
       eager eagle eardrum early earmuff earn earnest earphone earring earth earthquake earthworm easel easily eastbound eastern easygoing eater eavesdrop eccentric echo eclipse ecology economic economy ecosystem ecstasy edge edible edict edition editor educate education eel eerie effect effective efficiency efficient effort eggplant ego eight eighteen eighty either eject elaborate elastic elbow elder elderly elect election electric electricity electronic elegance elegant element elephant elevate elevation elevator eleven eligible eliminate elite elk ellipse elm eloquence eloquent elsewhere elude email embark embarrass embassy embed embellish ember emblem embody embrace embroider emerald emerge emergency emigrate eminent emotion emotional emperor emphasis emphasize empire employ employee employer employment empower empty emulate enable enact enamel enchant enclose enclosure encore encounter encourage encyclopedia endanger endeavor ending endless endorse endow endurance endure enemy energetic energy enforce engage engagement engine engineer engrave engross enhance enigma enjoy enjoyable enlarge enlighten enlist enormous enough enquire enrich enroll ensemble ensure entail entangle enter enterprise entertain enthusiasm entire entitle entity entrance entrap entreat entry envelop envelope environment envy enzyme epic epidemic episode equal equality equator equilibrium equip equipment equity equivalent era eradicate erase erect erosion errand erratic error erupt escalate escape escort especially essay essence essential establish estate esteem estimate eternal ethics ethnic etiquette evacuate evade evaluate evaporate evasion even evening event eventual ever evergreen everyday everyone everything everywhere evidence evident evil evoke evolution evolve exact exactly exaggerate exam examine example exceed excel excellent except exception excess exchange excite excitement exclaim exclude exclusive excuse execute executive exempt exercise exert exhaust exhibit exile exist existence exit exotic expand expanse expect expedition expel expense expensive experience experiment expert expire explain explicit explode exploit explore explosion export expose exposure express extend extension extensive extent exterior external extinct extra extract extreme exuberant eye eyebrow eyelash eyelid eyewitness
-      fable fabric fabricate facade face facilitate facility facsimile fact faction factor factory factual faculty fade fail failure faint fair fairy faith faithful fake falcon fall fallacy fallout falsehood falsify falter fame familiar family famine famous fanatic fancy fang fantasy farewell farm farmer farmhouse farmland fashion fast fasten fatal fate father fatigue faucet fault favor favorable favorite fawn fear fearful feast feather feature february federal federation fee feeble feed feedback feel feline fellow fellowship female feminine fence fend ferment fern ferocious ferry fertile fertilizer festival festive fetch fever few fiance fiber fiction fiddle fidelity field fierce fifteen fifty fig fight figure filament file fill fillet film filter filth final finale finance financial finch find finding fine finger finish finite fir firefly fireplace firewood firework firm first fiscal fish fisherman fist fit fitness five fix fixing fixture fizzle flag flagpole flake flame flamingo flank flannel flap flare flash flashlight flask flat flatter flavor flaw flax flea flee fleece fleet flesh flexible flexing flicker flight flimsiness fling flint flip flirt float flock flood floor flora floral florist floss flour flourish flow flower fluctuate fluency fluent fluff fluid fluke fluorescent flush flute flutter foam focus fodder fog foil fold foliage folk follow follower folly fond food fool foolish foot football footprint footstep footwear forage forbid force forecast forefront forehead foreign foreigner foreman foremost forensic forest forever forge forget forgive fork form formal format formation former formula forsake fort forth fortify fortress fortunate fortune forty forum forward fossil foster fought foul found foundation founder fountain four fourteen fourth fox foxglove foxhound fraction fracture fragile fragment fragrance fragrant frail frame framework franchise frank frantic fraud fray freak freckle free freedom freelance freeway freeze freezer freezing freight french frenzy frequent fresh freshman friction friday friend friendly friendship frieze fright frighten frigid fringe frizz frog frolic from front frontier frost frown frozen frugal fruit frustrate fry fudge fuel fugitive fulfill full fume fun function fund fundamental funeral fungus funnel funny fur furious furnace furnish furniture furrow further fury fuse fusion fuss future fuzzy
-      gadget gain galaxy gale gallery gallon gallop gamble game gamma gander gang garage garbage garden gargle garlic garment garnish garrison garter gas gasket gasoline gasp gate gateway gather gauge gauntlet gauze gavel gazelle gazebo gazette gear gecko gel gelatin gem gender general generate generation generous genetic genius gentle gentleman genuine geography geology geometry geranium germ germinate gesture get geyser ghost giant gift gigantic giggle gild gill ginger giraffe girder girdle girl give glacier glad glade gladiator glamour glance gland glare glass glazing gleam glean glee glen glide glimmer glimpse glisten glitter gloat global globe gloom glorious glory gloss glove glow glucose glue glum glutton gnarl gnash gnat gnaw goal goalkeeper goat goblet goblin gold golden goldfish golf gondola gone gong good goodbye goodness goods goodwill goose gorge gorgeous gorilla gospel gossip got gouge gourd govern government governor gown grab grace graceful gracious grade gradient gradual graduate grain grammar grand grandchild granddaughter grandfather grandmother grandparent grandson granite grant grape grapefruit graphic grapple grasp grass grasshopper grateful gratitude grave gravel gravity gravy gray graze grazing grease great greed greedy green greenhouse greet greeting grenade grey grid grief grievance grieve grill grim grimace grime grin grind grip gripe grit grizzly groan grocer grocery groom groove grope gross ground group grove grow growl growth grub grudge gruel gruesome grumble grumpy guarantee guard guardian guess guest guidance guide guild guilt guilty guitar gull gulp gum gun gunpowder gurgle gust gutter guy gymnasium gymnastics gypsy
+      fable fabric fabricate facade face facilitate facility facsimile fact faction factor factory factual faculty fade fail failure faint fair fairy faith faithful fake falcon fall fallacy fallout falsehood falsify falter fame familiar family famine famous fanatic fancy fang fantasy farewell farm farmer farmhouse farmland fashion fast fasten fatal fate father fatigue faucet fault favor favorable favorite fawn fear fearful feast feather feature february federal federation fee feeble feed feedback feel feline fellow fellowship female feminine fence fend ferment fern ferocious ferry fertile fertilizer festival festive fetch fever few fiance fiber fiction fiddle fidelity field fierce fifteen fifty fig fight figure filament file fill fillet film filter filth final finale finance financial finch find finding fine finger finish finite fir firefly fireplace firewood firework firm first fiscal fish fisherman fist fit fitness five fix fixing fixture fizzle flag flagpole flake flame flamingo flank flannel flap flare flash flashlight flask flat flatter flavor flaw flax flea flee fleece fleet flesh flexible flexing flicker flight flimsiness fling flint flip flirt float flock flood floor flora floral florist floss flour flourish flow flower fluctuate fluency fluent fluff fluid fluke fluorescent flush flute flutter foam focus fodder fog foil fold foliage folk follow follower folly fond food fool foolish foot football footprint footstep footwear forage forbid force forecast forefront forehead foreign foreigner foreman foremost forensic forest forever forge forget fork form formal format formation former formula forsake fort forth fortify fortress fortunate fortune forty forum forward fossil foster fought foul found foundation founder fountain four fourteen fourth fox foxglove foxhound fraction fracture fragile fragment fragrance fragrant frail frame framework franchise frank frantic fraud fray freak freckle free freedom freelance freeway freeze freezer freezing freight french frenzy frequent fresh freshman friction friday friend friendly friendship frieze fright frighten frigid fringe frizz frog frolic from front frontier frost frown frozen frugal fruit frustrate fry fudge fuel fugitive fulfill full fume fun function fund fundamental funeral fungus funnel funny fur furious furnace furnish furniture furrow further fury fuse fusion fuss future fuzzy
+      gadget gain galaxy gale gallery gallon gallop gamble game gamma gander gang garage garbage garden gargle garlic garment garnish garrison garter gas gasket gasoline gasp gate gateway gather gauge gauntlet gauze gavel gazelle gazebo gazette gear gecko gel gelatin gem gender general generate generation generous genetic genius gentle gentleman genuine geography geology geometry geranium germ germinate gesture get geyser ghost giant gift gigantic giggle gild gill ginger giraffe girder girdle girl give glacier glad glade gladiator glamour glance gland glare glass glazing gleam glean glee glen glide glimmer glimpse glisten glitter gloat global globe gloom glorious glory gloss glove glow glucose glue glum glutton gnarl gnash gnat gnaw goal goalkeeper goat goblet goblin gold golden goldfish golf gondola gone gong good goodbye goodness goods goodwill goose gorge gorgeous gorilla gospel gossip got gouge gourd govern government governor gown grab grace graceful gracious grade gradient gradual graduate grain grammar grand grandchild granddaughter grandfather grandmother grandparent grandson granite grant grape grapefruit graphic grapple grasp grass grasshopper grateful gratitude grave gravel gravity gravy gray graze grazing grease great greed greedy green greenhouse greet greeting grenade grey grid grief grievance grieve grill grim grimace grin grind grip gripe grit grizzly groan grocer grocery groom groove grope gross ground group grove grow growl growth grub grudge gruel gruesome grumble grumpy guarantee guard guardian guess guest guidance guide guild guilt guilty guitar gull gulp gum gun gunpowder gurgle gust gutter guy gymnasium gymnastics gypsy
       habit habitat habitual hack haddock hail haircut hairdresser hairpin half halibut hall hallelujah hallway halo halt halve hammer hammock hamper hamster hand handbag handbook handful handicap handkerchief handle handmade handshake handsome handwriting handy hang hangar hanger happen happiness happy harass harbor hard harden hardship hardware hardy hare harm harmony harness harp harpoon harsh harvest haste hasty hatch hatchet hate hatred haul haunt haven havoc hawk hay hazard hazardous hazel hazy head headache heading headlight headline headquarters heal health healthy heap hear hearing heart heartbeat hearth heartily heat heater heath heather heave heaven heavenly heavy hedge hedgehog heed heel height heirloom helicopter helium helix hello helmet help helpful helpless hemisphere hemp hen hence herald herb herd here heritage hermit hero heroic heroism herring hesitate hexagon hibernate hiccup hidden hide hideous hierarchy high highlight highway hijack hike hilarious hill hillside hilt hinder hinge hint hippopotamus hire historian historic history hitch hive hoarse hoax hobble hobby hobo hockey hoe hog hoist hold holder hole holiday hollow holly hologram holster holy home homeland homeless homemade homesick hometown homework honest honesty honey honeycomb honeymoon honor honorable hood hoof hook hoop hop hope hopeful hopeless horizon horizontal horn hornet horrible horror horse horseshoe hose hospitable hospital host hostage hostel hostile hot hotel hound hour hourglass house household housekeeper housing hover how howl hub huddle hug huge hull human humane humanity humble humid humidity humor hump hundred hunger hungry hunt hunter hurdle hurl hurricane hurry hurt husband hush husk hustle hybrid hydrant hydraulic hygiene hymn hyperbole hyphen hypnosis hypothesis hysterical
       iceberg icicle icon icy idea ideal identical identification identify identity ideology idiom idiot idle idol ignite ignorance ignorant ignore iguana ill illegal illegible illness illuminate illusion illustrate illustration image imaginary imagination imagine imitate imitation immature immediate immense immerse immigrant immigration immune impact impair impart impatient impeach impede impel impending imperative imperfect imperial implement implicate implicit imply import importance important impose impossible impress impression impressive imprint imprison improve improvement impulse impure inability inaccessible inaccurate inactive inadequate inadvertent inappropriate incapable incentive inception inch incident incline include inclusion inclusive income incoming incompatible incomplete inconsistent incorporate incorrect increase incredible incur indeed indefinite indent independence independent index indicate indication indicator indictment indifferent indigenous indignant indirect indispensable individual indoor induce indulge industrial industry inefficient inevitable inexpensive infant infantry infect infection infer inferior infinite infinity inflame inflate inflation inflict influence influential influx inform informal information infrastructure infrequent infringe ingenious ingredient inhabit inhabitant inherent inherit inhibition initial initiate inject injection injure injury injustice ink inland inlet inmate inn inner innocence innocent innovation input inquire inquiry inquisition inquisitive insane insect insecure insert inside insight insignia insignificant insincere insist insolent inspect inspection inspector inspiration inspire install installment instance instant instead instinct institute institution instruct instruction instructor instrument insufficient insult insurance intact intake integral integrate integrity intellect intellectual intelligence intelligent intend intense intensity intent interact interaction intercept interchange intercourse interest interfere interior intermediate internal international internet interpret interpretation interrupt interval intervene interview intimate intimidate into intolerable intonation intrigue intrinsic introduce introduction intrusion intuition invade invalid invaluable invasion invent invention inventor inventory inverse invert invest investigate investigation investor invisible invitation invite invoice invoke involve inward iron ironic irony irregular irrelevant irresistible irresponsible irrigate irritate island isolate isolation issue item ivory ivy
       jackal jacket jade jagged jaguar jail jam january jar jargon jasmine jaunty jaw jay jazz jazziest jealous jealousy jeans jeep jelly jellyfish jerk jersey jest jester jet jewel jeweler jewelry jigsaw jingle job jockey jog join joint joke jolly jolt journal journalism journalist journey jovial joy joyful joyous jubilant judge judgment judicial juggle juice juicy jukebox july jump junction june jungle junior juniper junk jurisdiction jury just justice justify juvenile
@@ -466,7 +455,7 @@ Interstellar</div>
       label labor laboratory labyrinth lace lack lacquer ladder ladle lady ladybug lagoon lair lake lamb lament lamp lance land landfill landing landlord landmark landscape lane language lantern lap lapse laptop larceny lard large lark larva laser lash lasso last latch late lately latent lateral lather latitude latter lattice laugh laughter launch laundry laurel lava lavender law lawful lawn lawsuit lawyer laxative layer layout lazy lead leader leadership leading leaf leaflet league leak lean leap learn learning lease leash least leather leave lecture ledge leech leek left legacy legal legend legible legion legislate legislation legitimate leisure lemon lemonade lend length lengthen lens lentil leopard less lessen lesson let lethal letter lettuce level lever levy liable liaison liar liberal liberate liberty librarian library license lick lid lie lieutenant life lifebuoy lifeguard lifeless lifetime lift light lighthouse lightning like likelihood likely likeness likewise lilac lily limb limbo lime limelight limit limitation limp line linen liner linger lining link lion lip liquid liquor list listen listener literal literary literature litter little live lively liver livestock lizard load loaf loan loathe lobby lobster local locality locate location lock locker locket locomotive locust lodge loft lofty log logic logical loneliness lonely long longitude look lookout loom loop loose loosen loot lord lose loss lost lot lotion lottery loud lounge louse lovable love lovely lover low lower loyal loyalty luck lucky luggage lukewarm lullaby lumber luminous lump lunar lunch luncheon lung lure lurk lush luster luxury lyric
       macaroni machine machinery mackerel mad madam magazine magic magical magician magistrate magnet magnetic magnificent magnify magnitude mahogany maid maiden mail mailbox main mainland mainly maintain maintenance maize majestic majesty major majority make maker makeup malice malicious mall mallet mammal mammoth man manage management manager mandate maneuver mango manhood mania manicure manifest manipulate mankind manner mansion manual manufacture manuscript many map maple marathon marble march mare margin marigold marine mariner mark market marketplace marmalade maroon marquee marquis marriage marrow marry marsh marshal marshmallow martial martyr marvel marvelous mascot masculine mash mask mason masquerade mass massacre massage massive mast master masterpiece mastery mat match mate material maternal math mathematics matter mattress mature maturity maxim maximum may maybe mayor maze meadow meager meal mean meaning meaningful meanwhile measure measurement meat mechanic mechanical mechanism medal meddle media mediate medical medication medicine medieval mediocre meditate meditation medium medley meek meet meeting melancholy mellow melody melon melt member membership membrane memento memo memoir memorable memorial memorize memory menace mend mental mentality mention menu merchandise merchant merciful mercy mere merely merge merit mermaid merry mesh mess message messenger metal metaphor meteor meter method metric metropolis microphone microscope microwave midday middle midnight midst might mighty migrate mild mildew mile milestone military milk mill millennium miller millionaire mimic mince mind mindful mine miner mineral mingle miniature minimal minimum minister ministry minor minority mint minus minute miracle mirage mirror mirth mischief miserable misery misfortune misgiving mislead misplace miss missile mission mist mistake mister mistletoe mistress mistrust misty misunderstand misuse mitten mix mixer mixture moan moat mob mobile mobility mobilize mock mode model moderate modern modest modify moist moisture mold molecule moment momentary momentum monarch monarchy monastery monday money monitor monk monkey monopoly monster month monthly monument mood moody moon moonlight moor moose mop moral morale morality moreover morning mortal mortar mosaic mosquito moss most motel moth mother motion motivate motive motor motorcycle motto mound mount mountain mourn mouse mouth move movement movie mow much mucus mud muffin mug mule multiple multiply multitude mumble mummy munch mundane municipal mural murder murmur muscle museum mushroom music musical musician muskrat muss mustache mustard mute mutiny mutter mutton mutual muzzle mystery mystic myth mythology
       nail naive naked name namely nap napkin narrate narrative narrow nasty nation national native natural nature naughty naval navigate navigation navy near nearby nearly neat nebula necessary necessity neck necklace nectar need needle needless needy negative neglect negotiate neighbor neighborhood neither neon nephew nerve nervous nest net network neutral never nevertheless newborn newcomer newlywed news newsletter newspaper next nibble nice nick nickname niece night nightclub nightfall nightmare nine nineteen ninety ninth nitrogen nobility noble nobody nocturnal nod noise noisy nomad nominal nominate none nonsense noodle noon normal normally north northeast northern northwest nose nostril notable notably notation notch note notebook nothing notice notify notion notorious noun nourish novel novelty november novice now nowadays nowhere nozzle nuclear nucleus nudge nugget nuisance numb number numerous nun nurse nursery nurture nut nutmeg nutrient nutrition nutshell nylon
-      oak oar oasis oat oath oatmeal obedience obedient obey object objection objective obligation oblige oblique obscure observation observe observer obsession obsolete obstacle obstruct obtain obvious occasion occasional occupation occupy occur ocean october octopus odd odor offend offense offensive offer offering office officer official offset offspring often oil ointment okay old olive omelet omen omission omit once one onion online only onset onto onward ooze oozing opaque open opening opera operate operation operator opinion opponent opportunity oppose opposite opposition oppress optical optimism optimistic option oral orange orbit orchard orchestra orchid order orderly ordinary ore organ organic organism organization organize origin original ornament orphan ostrich other otherwise otter ought ounce our out outcome outcry outdoor outer outfit outgoing outing outlaw outlet outline outlook output outrage outside outsider oval oven over overall overcome overflow overhead overlap overlook overnight overseas overtake overthrow overtime overview overwhelm owe owl own owner ownership ox oxygen oyster ozone
+      oak oar oasis oat oatmeal obedience obedient obey object objection objective obligation oblige oblique obscure observation observe observer obsession obsolete obstacle obstruct obtain obvious occasion occasional occupation occupy occur ocean october octopus odd odor offend offense offensive offer offering office officer official offset offspring often oil ointment okay old olive omelet omen omission omit once one onion online only onset onto onward ooze oozing opaque open opening opera operate operation operator opinion opponent opportunity oppose opposite opposition oppress optical optimism optimistic option oral orange orbit orchard orchestra orchid order orderly ordinary ore organ organic organism organization organize origin original ornament orphan ostrich other otherwise otter ought ounce our out outcome outcry outdoor outer outfit outgoing outing outlaw outlet outline outlook output outrage outside outsider oval oven over overall overcome overflow overhead overlap overlook overnight overseas overtake overthrow overtime overview overwhelm owe owl own owner ownership ox oxygen oyster ozone
       pace pack package packet pact paddle padlock pagan page pageant paid pail pain painful paint painter painting pair palace pale palette palm pamphlet pan pancake panda panel panic panorama panther pantry paper parachute parade paradise paradox paragraph parallel paralyze parcel pardon parent park parliament parlor parrot part partial participate particle particular partly partner partnership party pass passage passenger passion passive passport password past pasta paste pastime pastry pasture pat patch patent path pathetic patience patient patrol patron pattern pause pave pavilion paw pawn pay payment pea peace peaceful peach peacock peak peanut pear pearl peasant pebble pecan peck peculiar pedal pedestrian peek peel peer peg pelican pellet pen penalty pencil pendulum penetrate penguin peninsula penny pension people pepper perceive percent percentage perception perch perfect perfection perform performance performer perfume perhaps peril perimeter period periodic permanent permission permit perpetual perplex persecute persevere persist person personal personality perspective persuade pest pester pet petal petition petrify petroleum petty phantom pharmacy phase pheasant phenomenon philosopher philosophy phone photo photograph photographer phrase physical physician physics piano piazza pick picket pickle picnic picture pie piece pier pierce pig pigeon pigment pile pilgrim pill pillar pillow pilot pin pinch pine pineapple pink pinnacle pioneer pious pipe pipeline pique pirate pistol piston pit pitch pitcher pity pivot pizza pizzeria place placid plague plain plaintiff plan plane planet plank plant plantation plaque plaster plastic plate plateau platform platinum platter play player playful playground plea plead pleasant please pleasure pledge plenty pliers plot plow pluck plug plum plumber plume plump plunder plunge plural plus plush pneumonia pocket pod poem poet poetry point poison poke polar pole police policy polish polite political politician politics pollen pollute pollution polo polyester pomegranate pompous pond ponder pony pool poor pop popcorn pope popular popularity population porcelain porch porcupine pore pork port portable portal porter portion portrait portray pose position positive possess possession possibility possible post postage postal postcard poster postpone posture pot potato potent potential pottery pouch poultry pound pour poverty powder power powerful practical practice prairie praise prank prawn pray prayer preach precaution precede precious precise precision predator predict prediction preface prefer preference pregnant prejudice preliminary prelude premature premier premise premium preparation prepare prescribe prescription presence present presentation preserve preside president press pressure prestige presume pretend pretty prevail prevent previous prey price pride priest primary prime primitive prince princess principal principle print printer prior priority prism prison prisoner privacy private privilege prize probable probably problem procedure proceed process procession proclaim produce producer product production productive profession professional professor profile profit profound program progress prohibit project projector prolong prominent promise promote prompt prone prong pronounce proof prop propaganda propel proper property prophecy prophet proportion proposal propose prosecute prospect prosper prosperity protect protection protein protest proud prove proverb provide province provision provoke proxy prune psalm psychology pub public publication publicity publish pudding puddle puff pull pulley pulp pulse pump pumpkin punch punctual puncture punish punishment pupil puppet puppy purchase pure purify purple purpose purse pursue pursuit push puzzle puzzling pyramid
       quail quaint quake qualification qualify quality quantity quarantine quarrel quarry quarter quartet quartz queen queer quench query quest question queue quick quiet quill quilt quince quit quite quiver quiz quizzical quota quotation quote
       rabbi rabbit raccoon race racial rack racket radar radial radiate radiation radiator radical radio radish radius raffle raft rage raid rail railroad railway rain rainbow raincoat rainfall raise raisin rake rally ram ramble ramp ranch random range rank ransom rapid rare rarely rascal rash raspberry rat rate rather rating ratio ration rational rattle raven raw ray razor reach react reaction read reader readily reading ready real realistic reality realize really realm reap rear reason reasonable rebel rebellion rebuild recall receipt receive recent reception recess recipe recipient recite reckless recognize recommend record recorder recover recovery recreation recruit rectangle rectangular recur red redeem reduce reduction reed reef reel refer referee reference refine reflect reflection reform refrain refresh refrigerator refuge refugee refund refusal refuse regain regard regardless regime region regional register regret regular regulate regulation rehearsal rehearse reign reinforce reject rejection rejoice relate relation relationship relative relax relaxing relay release relevant reliable reliance relief relieve religion religious relish reluctant rely remain remainder remark remarkable remedy remember remind reminder remnant remote removal remove render renew renounce rent repair repay repeat repel repent replace replacement reply report reporter represent representative reproduce reptile republic reputation request require requirement rescue research researcher resemble resent reservation reserve reservoir reside residence resident resign resist resistance resolution resolve resort resource respect respective respond response responsibility responsible rest restaurant restless restore restrain restrict restriction result resume retail retain retire retirement retreat retrieve return reunion reveal revenge revenue reverence reverse review revise revival revive revolt revolution reward rhetoric rhythm rib ribbon rice rich riddle ride rider ridge ridicule ridiculous rifle rig right righteous rigid rigor rim ring rinse riot rip ripe ripple rise risk risky ritual rival river road roam roar roast rob robber robbery robe robin robot robust rock rocket rocky rod rodent rogue role roll roller romance romantic roof room rooster root rope rose rot rotate rotation rotten rough round route routine rover row royal rub rubber rubbish ruby rudder rude rug rugged ruin rule ruler rumor run runway rural rush rust rustic ruthlessness rye
@@ -479,7 +468,6 @@ Interstellar</div>
       zeal zealous zebra zero zest zigzag zinc zipper zodiac zombie zone zoo zoom
     `.trim().split(/\s+/).map(w => w.toLowerCase());
 
-    // Bucket words strictly by their true 3rd letter (index 2)
     const BUCKETS = {};
     const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
     ALPHABET.forEach(ch => { BUCKETS[ch] = []; });
@@ -495,10 +483,8 @@ Interstellar</div>
       }
     }
 
-    // Normal full mixed pool
     const NORMAL_POOL = Array.from(seenSet);
 
-    // Fisher-Yates shuffle
     function shuffle(arr) {
       const a = arr.slice();
       for (let i = a.length - 1; i > 0; i--) {
@@ -508,8 +494,6 @@ Interstellar</div>
       return a;
     }
 
-    // Build a 2,200-word list by cycling through shuffled copies without repeating
-    // any word inside a cycle or creating adjacent duplicates across cycle seams.
     function buildCycleList(sourceWords, targetCount = 2200) {
       if (!sourceWords || sourceWords.length === 0) return [];
       const result = [];
@@ -528,23 +512,21 @@ Interstellar</div>
       return result;
     }
 
-    // =========================================================================
-    // 2. STATE & DOM REFERENCES
-    // =========================================================================
     const TOTAL_ROWS = 2200;
     const ROW_HEIGHT = 32;
-    const PAUSE_MS = 6000; // 6-second pause after scrolling before arming next transition
+    const PAUSE_MS = 6000;
 
-    let targetName = '';       // Sanitized A-Z uppercase spectator name
-    let isArmed = false;       // Performance mode state
-    let letterIdx = -1;        // -1 when freshly armed (waiting for 1st scroll), then 0..N-1
+    let targetName = '';
+    let isArmed = false;
+    let letterIdx = -1;
     let hasScrolledSinceStep = false;
     let readyToAdvance = false;
     let pauseTimer = null;
+    let bounceIgnoreUntil = 0;
 
-    let currentWords = [];     // Currently rendered array of 2,200 words
-    let pendingWords = null;   // Words queued for locked viewport rows once scrolled offscreen
-    let lockedRange = null;    // [startIdx, endIdx] of viewport rows protected from visual jump
+    let currentWords = [];
+    let pendingWords = null;
+    let lockedRange = null;
 
     const homeView = document.getElementById('home-view');
     const noteView = document.getElementById('note-view');
@@ -555,7 +537,6 @@ Interstellar</div>
     const pullIndicator = document.getElementById('pull-indicator');
     const pullSpinner = document.getElementById('pull-spinner');
 
-    // Format current time realistically for Keep's "Edited HH:MM AM/PM"
     function getFormattedTime() {
       const now = new Date();
       return now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
@@ -563,7 +544,6 @@ Interstellar</div>
     const baseTimeStr = `Edited ${getFormattedTime()}`;
     editedStamp.textContent = baseTimeStr;
 
-    // Pre-build 2,200 row DOM nodes once for butter-smooth Android scrolling
     const rowNodes = [];
     const frag = document.createDocumentFragment();
     for (let i = 0; i < TOTAL_ROWS; i++) {
@@ -586,7 +566,6 @@ Interstellar</div>
         return;
       }
 
-      // Calculate visible row range (accounting for the ~52px note title header)
       const scrollTop = Math.max(0, scrollArea.scrollTop - 52);
       const viewHeight = scrollArea.clientHeight || 700;
       const firstVis = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - 3);
@@ -595,7 +574,6 @@ Interstellar</div>
       lockedRange = [firstVis, lastVis];
       pendingWords = newWords;
 
-      // Immediately swap every off-screen row; keep visible rows untouched so screen never jumps
       for (let i = 0; i < TOTAL_ROWS; i++) {
         if (i < firstVis || i > lastVis) {
           rowNodes[i].textContent = newWords[i];
@@ -603,7 +581,6 @@ Interstellar</div>
       }
     }
 
-    // Flush previously locked rows once the spectator scrolls them safely offscreen
     function flushLockedRowsIfOffscreen() {
       if (!pendingWords || !lockedRange) return;
       const scrollTop = Math.max(0, scrollArea.scrollTop - 52);
@@ -621,9 +598,6 @@ Interstellar</div>
       }
     }
 
-    // =========================================================================
-    // 3. HOME SCREEN & DISGUISED NAME CAPTURE
-    // =========================================================================
     searchInput.addEventListener('input', () => {
       const q = searchInput.value.trim().toLowerCase();
       document.querySelectorAll('#others-grid .note-card').forEach(card => {
@@ -639,13 +613,11 @@ Interstellar</div>
         targetName = cleaned;
       }
 
-      // Reset search bar & decoy visibility
       searchInput.value = '';
       document.querySelectorAll('#others-grid .note-card').forEach(card => {
         card.style.display = 'flex';
       });
 
-      // Reset to Disarmed Normal Mode whenever opened
       setArmedState(false, false);
       scrollArea.scrollTop = 0;
 
@@ -662,16 +634,13 @@ Interstellar</div>
       homeView.style.display = 'flex';
     });
 
-    // =========================================================================
-    // 4. ARMING / DISARMING & PROGRESSIVE LETTER ADVANCEMENT
-    // =========================================================================
     function updateVisualCue() {
       if (isArmed) {
         document.body.classList.add('is-armed');
-        editedStamp.textContent = baseTimeStr + '.'; // Subtle trailing period when armed
+        editedStamp.textContent = baseTimeStr + '.';
       } else {
         document.body.classList.remove('is-armed');
-        editedStamp.textContent = baseTimeStr;       // No period when disarmed
+        editedStamp.textContent = baseTimeStr;
       }
     }
 
@@ -681,12 +650,14 @@ Interstellar</div>
 
       if (arm && targetName.length > 0) {
         isArmed = true;
-        letterIdx = -1;          // Wait until scrolling resumes to load Letter #1
-        readyToAdvance = true;   // Triggers seamlessly on the first scroll event
+        letterIdx = -1;
+        readyToAdvance = true;
+        bounceIgnoreUntil = Date.now() + 450;
       } else {
         isArmed = false;
         letterIdx = -1;
         readyToAdvance = false;
+        bounceIgnoreUntil = 0;
         const normalList = buildCycleList(NORMAL_POOL, TOTAL_ROWS);
         applyWordList(normalList, preserveViewport);
       }
@@ -698,25 +669,24 @@ Interstellar</div>
       if (!isArmed) return;
 
       if (letterIdx < targetName.length - 1) {
-        // Load the next letter of the spectator's name off-screen
         letterIdx++;
         const nextLetter = targetName[letterIdx];
         const pool = buildCycleList(BUCKETS[nextLetter], TOTAL_ROWS);
         applyWordList(pool, true);
       } else {
-        // Final letter batch was already selected & paused for 6s:
-        // Automatically disarm back to the normal random word list on resumed scroll
         setArmedState(false, true);
       }
     }
 
-    // Monitor scrolling to detect "stop & pick word -> resume scroll"
     scrollArea.addEventListener('scroll', () => {
       flushLockedRowsIfOffscreen();
 
       if (!isArmed) return;
 
-      // Trigger next batch (or initial Letter #1 right after arming) when scrolling resumes
+      if (letterIdx === -1 && (Date.now() < bounceIgnoreUntil || scrollArea.scrollTop <= 24)) {
+        return;
+      }
+
       if (readyToAdvance) {
         readyToAdvance = false;
         hasScrolledSinceStep = false;
@@ -727,7 +697,6 @@ Interstellar</div>
       hasScrolledSinceStep = true;
       clearTimeout(pauseTimer);
 
-      // Once scrolling stops for PAUSE_MS (6 seconds), arm the next transition (or disarm after final letter)
       pauseTimer = setTimeout(() => {
         if (isArmed && hasScrolledSinceStep) {
           readyToAdvance = true;
@@ -735,9 +704,6 @@ Interstellar</div>
       }, PAUSE_MS);
     }, { passive: true });
 
-    // =========================================================================
-    // 5. TOP OVERSCROLL PULL-TO-REFRESH GESTURE (ARM-ONLY TRIGGER)
-    // =========================================================================
     let pullStartY = 0;
     let isPullingTop = false;
     let pullDistance = 0;
@@ -745,6 +711,9 @@ Interstellar</div>
 
     scrollArea.addEventListener('touchstart', (e) => {
       if (e.touches.length !== 1) return;
+      if (isArmed && letterIdx === -1) {
+        bounceIgnoreUntil = 0;
+      }
       if (scrollArea.scrollTop <= 0) {
         pullStartY = e.touches[0].clientY;
         isPullingTop = true;
@@ -781,14 +750,12 @@ Interstellar</div>
       pullIndicator.style.opacity = '0';
       pullIndicator.style.transform = 'translate(-50%, -44px)';
 
-      // Arms silently without changing visible words until scrolling begins
       if (!isArmed && pullDistance >= PULL_THRESHOLD / 2) {
         setArmedState(true, true);
       }
       pullDistance = 0;
     });
 
-    // Initialize default list on load
     applyWordList(buildCycleList(NORMAL_POOL, TOTAL_ROWS), false);
   </script>
 </body>
