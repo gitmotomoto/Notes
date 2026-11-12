@@ -5,16 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#202124" />
   <title>Keep Notes</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --surface: #f1f3f4;
-      --border: #e0e0e0;
-      --text: #202124;
-      --muted: #5f6368;
-      --icon: #5f6368;
+      --bg: #202124;
+      --surface: #303134;
+      --nav-bg: #292a2d;
+      --border: #5f6368;
+      --card-border: #3c4043;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --icon: #9aa0a6;
       --row-h: 32px;
     }
 
@@ -77,10 +79,10 @@
       width: 30px;
       height: 30px;
       border-radius: 50%;
-      background: #1a73e8;
-      color: #fff;
+      background: #8ab4f8;
+      color: #202124;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -107,10 +109,10 @@
     }
 
     .note-card {
-      border: 1px solid var(--border);
+      border: 1px solid var(--card-border);
       border-radius: 12px;
       padding: 14px;
-      background: #ffffff;
+      background: var(--bg);
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -119,12 +121,13 @@
     }
 
     .note-card:active {
-      background: #f8f9fa;
+      background: #2d2e30;
     }
 
-    .note-card.tint-yellow { background: #fff475; border-color: #f4e65b; }
-    .note-card.tint-blue   { background: #cbf0f8; border-color: #b4e2ec; }
-    .note-card.tint-green  { background: #ccff90; border-color: #b8ee7a; }
+    /* Authentic Google Keep dark mode note tints */
+    .note-card.tint-yellow { background: #5c4b14; border-color: #78621c; }
+    .note-card.tint-blue   { background: #1e3a5f; border-color: #284b7a; }
+    .note-card.tint-green  { background: #345920; border-color: #44722b; }
 
     .card-title {
       font-size: 15px;
@@ -135,15 +138,15 @@
 
     .card-body {
       font-size: 13px;
-      color: #3c4043;
+      color: #bdc1c6;
       line-height: 1.45;
       white-space: pre-line;
     }
 
     .bottom-nav {
       height: 52px;
-      background: #f8f9fa;
-      border-top: 1px solid #eceff1;
+      background: var(--nav-bg);
+      border-top: 1px solid #3c4043;
       display: flex;
       align-items: center;
       padding: 0 18px;
@@ -158,8 +161,8 @@
       width: 56px;
       height: 56px;
       border-radius: 16px;
-      background: #ffffff;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.12);
+      background: #303134;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -200,7 +203,7 @@
     }
 
     .icon-btn:active {
-      background: rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.08);
     }
 
     .topbar-right {
@@ -209,7 +212,7 @@
       gap: 4px;
     }
 
-    /* Pull-to-refresh spinner indicator (looks native) */
+    /* Pull-to-refresh spinner indicator (dark theme) */
     .pull-indicator {
       position: absolute;
       top: 56px;
@@ -218,8 +221,8 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      background: #303134;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.45);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -232,7 +235,7 @@
     .pull-spinner {
       width: 18px;
       height: 18px;
-      border: 2.2px solid #1a73e8;
+      border: 2.2px solid #8ab4f8;
       border-top-color: transparent;
       border-radius: 50%;
     }
@@ -263,7 +266,7 @@
       height: var(--row-h);
       line-height: var(--row-h);
       font-size: 16px;
-      color: #202124;
+      color: var(--text);
       letter-spacing: 0.1px;
       white-space: nowrap;
       overflow: hidden;
@@ -300,7 +303,7 @@
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: #80868b;
+      background: #9aa0a6;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
@@ -323,11 +326,11 @@
   <div id="home-view">
     <div class="search-header">
       <div class="search-pill">
-        <span style="color:#5f6368;display:flex;">
+        <span style="color:var(--icon);display:flex;">
           <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
         </span>
         <input id="keep-search" type="text" placeholder="Search your notes" autocomplete="off" autocorrect="off" spellcheck="false" />
-        <span style="color:#5f6368;display:flex;">
+        <span style="color:var(--icon);display:flex;">
           <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
         </span>
         <div class="avatar">M</div>
@@ -382,10 +385,10 @@ Interstellar</div>
     </div>
 
     <div class="bottom-nav">
-      <svg viewBox="0 0 24 24" style="color:#5f6368"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      <svg viewBox="0 0 24 24" style="color:#5f6368"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34a.996.996 0 0 0-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 0 0 0-1.41z"/></svg>
-      <svg viewBox="0 0 24 24" style="color:#5f6368"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15a.998.998 0 0 0-.98-.85c-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08a6.993 6.993 0 0 0 5.91-5.78c.1-.6-.39-1.14-1-1.14z"/></svg>
-      <svg viewBox="0 0 24 24" style="color:#5f6368"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34a.996.996 0 0 0-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 0 0 0-1.41z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15a.998.998 0 0 0-.98-.85c-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08a6.993 6.993 0 0 0 5.91-5.78c.1-.6-.39-1.14-1-1.14z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
       <div class="fab" id="fab-open">
         <svg viewBox="0 0 36 36" style="width:28px;height:28px;">
           <path fill="#34A853" d="M16 16v14h4V20z"/>
@@ -530,7 +533,7 @@ Interstellar</div>
     // =========================================================================
     const TOTAL_ROWS = 2200;
     const ROW_HEIGHT = 32;
-    const PAUSE_MS = 6000; // 6-second pause after scrolling before arming next letter swap
+    const PAUSE_MS = 6000; // 6-second pause after scrolling before arming next transition
 
     let targetName = '';       // Sanitized A-Z uppercase spectator name
     let isArmed = false;       // Performance mode state
@@ -693,13 +696,20 @@ Interstellar</div>
       updateVisualCue();
     }
 
-    function advanceToNextLetter() {
-      if (!isArmed || letterIdx >= targetName.length - 1) return;
-      letterIdx++;
-      const nextLetter = targetName[letterIdx];
-      const pool = buildCycleList(BUCKETS[nextLetter], TOTAL_ROWS);
-      // Swap all offscreen words seamlessly while keeping visible screen frozen
-      applyWordList(pool, true);
+    function advanceStep() {
+      if (!isArmed) return;
+
+      if (letterIdx < targetName.length - 1) {
+        // Move to the next letter of the spectator's name
+        letterIdx++;
+        const nextLetter = targetName[letterIdx];
+        const pool = buildCycleList(BUCKETS[nextLetter], TOTAL_ROWS);
+        applyWordList(pool, true);
+      } else {
+        // Final letter batch was already selected & paused for 6s:
+        // Automatically disarm back to the normal random word list on resumed scroll
+        setArmedState(false, true);
+      }
     }
 
     // Monitor scrolling to detect "stop & pick word -> resume scroll"
@@ -708,28 +718,28 @@ Interstellar</div>
 
       if (!isArmed) return;
 
-      // If spectator paused long enough to pick/say their word, and now resumes scrolling:
+      // If spectator paused 6s to pick/say their word, and now resumes scrolling:
       if (readyToAdvance) {
         readyToAdvance = false;
         hasScrolledSinceStep = false;
-        advanceToNextLetter();
+        advanceStep();
+        // If that step disarmed the app, exit early
+        if (!isArmed) return;
       }
 
       hasScrolledSinceStep = true;
       clearTimeout(pauseTimer);
 
-      // Once scrolling stops for PAUSE_MS (6 seconds), arm the next transition on subsequent scroll
-      if (letterIdx < targetName.length - 1) {
-        pauseTimer = setTimeout(() => {
-          if (isArmed && hasScrolledSinceStep) {
-            readyToAdvance = true;
-          }
-        }, PAUSE_MS);
-      }
+      // Once scrolling stops for PAUSE_MS (6 seconds), arm the next transition (or disarm after final letter)
+      pauseTimer = setTimeout(() => {
+        if (isArmed && hasScrolledSinceStep) {
+          readyToAdvance = true;
+        }
+      }, PAUSE_MS);
     }, { passive: true });
 
     // =========================================================================
-    // 5. TOP OVERSCROLL PULL-TO-REFRESH GESTURE (ARM / DISARM TRIGGER)
+    // 5. TOP OVERSCROLL PULL-TO-REFRESH GESTURE (ARM-ONLY TRIGGER)
     // =========================================================================
     let pullStartY = 0;
     let isPullingTop = false;
@@ -774,9 +784,9 @@ Interstellar</div>
       pullIndicator.style.opacity = '0';
       pullIndicator.style.transform = 'translate(-50%, -44px)';
 
-      if (pullDistance >= PULL_THRESHOLD / 2) {
-        // Toggle Armed <-> Disarmed
-        setArmedState(!isArmed, false);
+      // Only arms if currently disarmed (does NOT disarm if already armed)
+      if (!isArmed && pullDistance >= PULL_THRESHOLD / 2) {
+        setArmedState(true, false);
       }
       pullDistance = 0;
     });
