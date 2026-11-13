@@ -2,337 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Keep Notes" />
   <meta name="theme-color" content="#202124" />
+  <link rel="manifest" href="manifest.json" />
   <title>Keep Notes</title>
   <style>
     :root {
       --bg: #202124;
       --surface: #303134;
       --nav-bg: #292a2d;
-      --border: #5f6368;
       --card-border: #3c4043;
       --text: #e8eaed;
       --muted: #9aa0a6;
-      --icon: #9aa0a6;
       --row-h: 32px;
     }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      background: var(--bg); color: var(--text);
+      font-family: 'Roboto', system-ui, -apple-system, sans-serif;
       overflow: hidden;
     }
-
-    #home-view {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
+    #home-view, #note-view {
+      display: flex; flex-direction: column; height: 100%; width: 100%;
       background: var(--bg);
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
-
-    .search-header {
-      padding: 10px 14px 6px;
-      background: var(--bg);
-    }
-
+    #note-view { display: none; position: relative; }
+    .search-header { padding: 10px 14px 6px; }
     .search-pill {
-      display: flex;
-      align-items: center;
-      background: var(--surface);
-      border-radius: 28px;
-      height: 48px;
-      padding: 0 14px;
-      gap: 12px;
+      display: flex; align-items: center; background: var(--surface);
+      border-radius: 28px; height: 48px; padding: 0 14px; gap: 12px;
     }
-
     .search-pill input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 16px;
-      color: var(--text);
-      outline: none;
-      user-select: text;
+      flex: 1; border: none; background: transparent; font-size: 16px;
+      color: var(--text); outline: none; user-select: text;
     }
-
-    .search-pill input::placeholder {
-      color: var(--muted);
-    }
-
+    .search-pill input::placeholder { color: var(--muted); }
     .avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #8ab4f8;
-      color: #202124;
-      font-size: 14px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 30px; height: 30px; border-radius: 50%; background: #8ab4f8;
+      color: var(--bg); font-size: 14px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-
     .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      color: var(--muted);
-      padding: 12px 18px 6px;
-      text-transform: uppercase;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+      color: var(--muted); padding: 12px 18px 6px; text-transform: uppercase;
     }
-
     .notes-grid {
-      flex: 1;
-      overflow-y: auto;
-      padding: 4px 12px 90px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      align-content: start;
+      flex: 1; overflow-y: auto; padding: 4px 12px 90px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: start;
     }
-
     .note-card {
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 14px;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      cursor: pointer;
-      transition: background 0.12s ease;
+      border: 1px solid var(--card-border); border-radius: 12px; padding: 14px;
+      background: var(--bg); display: flex; flex-direction: column; gap: 6px; cursor: pointer;
     }
-
-    .note-card:active {
-      background: #2d2e30;
-    }
-
+    .note-card:active { background: #2d2e30; }
     .note-card.tint-yellow { background: #5c4b14; border-color: #78621c; }
-    .note-card.tint-blue   { background: #1e3a5f; border-color: #284b7a; }
-    .note-card.tint-green  { background: #345920; border-color: #44722b; }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.3;
-    }
-
-    .card-body {
-      font-size: 13px;
-      color: #bdc1c6;
-      line-height: 1.45;
-      white-space: pre-line;
-    }
-
+    .note-card.tint-blue { background: #1e3a5f; border-color: #284b7a; }
+    .note-card.tint-green { background: #345920; border-color: #44722b; }
+    .card-title { font-size: 15px; font-weight: 600; line-height: 1.3; }
+    .card-body { font-size: 13px; color: #bdc1c6; line-height: 1.45; white-space: pre-line; }
     .bottom-nav {
-      height: 52px;
-      background: var(--nav-bg);
-      border-top: 1px solid #3c4043;
-      display: flex;
-      align-items: center;
-      padding: 0 18px;
-      gap: 22px;
-      position: relative;
+      height: 52px; background: var(--nav-bg); border-top: 1px solid var(--card-border);
+      display: flex; align-items: center; padding: 0 18px; gap: 22px; position: relative;
     }
-
     .fab {
-      position: absolute;
-      right: 18px;
-      bottom: 24px;
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: #303134;
+      position: absolute; right: 18px; bottom: 24px; width: 56px; height: 56px;
+      border-radius: 16px; background: var(--surface);
       box-shadow: 0 4px 12px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
-
-    #note-view {
-      display: none;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-      background: var(--bg);
-      position: relative;
-    }
-
     .note-topbar {
-      height: 56px;
-      padding: 0 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg);
-      flex-shrink: 0;
-      z-index: 5;
+      height: 56px; padding: 0 12px; display: flex; align-items: center;
+      justify-content: space-between; flex-shrink: 0; z-index: 5;
     }
-
     .icon-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--icon);
-      cursor: pointer;
+      width: 40px; height: 40px; border-radius: 50%; border: none;
+      background: transparent; display: flex; align-items: center;
+      justify-content: center; color: var(--muted); cursor: pointer;
     }
-
-    .icon-btn:active {
-      background: rgba(255,255,255,0.08);
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
+    .icon-btn:active { background: rgba(255,255,255,0.08); }
+    .topbar-right, .bottom-left, .bottom-right { display: flex; align-items: center; gap: 2px; }
     .pull-indicator {
-      position: absolute;
-      top: 56px;
-      left: 50%;
-      transform: translate(-50%, -44px);
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #303134;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 4;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.15s ease;
+      position: absolute; top: calc(56px + env(safe-area-inset-top)); left: 50%;
+      transform: translate(-50%, -44px); width: 34px; height: 34px; border-radius: 50%;
+      background: var(--surface); box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 4; pointer-events: none; opacity: 0; transition: opacity 0.15s ease;
     }
-
     .pull-spinner {
-      width: 18px;
-      height: 18px;
-      border: 2.2px solid #8ab4f8;
-      border-top-color: transparent;
-      border-radius: 50%;
+      width: 18px; height: 18px; border: 2.2px solid #8ab4f8;
+      border-top-color: transparent; border-radius: 50%;
     }
-
     .note-scroll-area {
-      flex: 1;
-      overflow-y: auto;
-      padding: 4px 22px 48px;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
-      will-change: transform;
+      flex: 1; overflow-y: auto; padding: 4px 22px 48px;
+      -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain;
     }
-
-    .note-title {
-      font-size: 22px;
-      font-weight: 400;
-      color: var(--text);
-      margin: 4px 0 14px;
-      letter-spacing: -0.2px;
-    }
-
-    .word-list {
-      display: flex;
-      flex-direction: column;
-    }
-
+    .note-title { font-size: 22px; font-weight: 400; margin: 4px 0 14px; letter-spacing: -0.2px; }
+    .word-list { display: flex; flex-direction: column; }
     .word-row {
-      height: var(--row-h);
-      line-height: var(--row-h);
-      font-size: 16px;
-      color: var(--text);
-      letter-spacing: 0.1px;
-      white-space: nowrap;
-      overflow: hidden;
+      height: var(--row-h); line-height: var(--row-h); font-size: 16px;
+      letter-spacing: 0.1px; white-space: nowrap; overflow: hidden;
     }
-
     .note-bottombar {
-      height: 48px;
-      padding: 0 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg);
-      flex-shrink: 0;
-      position: relative;
+      height: 48px; padding: 0 12px; display: flex; align-items: center;
+      justify-content: space-between; flex-shrink: 0;
     }
-
-    .bottom-left, .bottom-right {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .edited-stamp {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.1px;
-    }
-
+    .edited-stamp { font-size: 12px; color: var(--muted); letter-spacing: 0.1px; }
     .armed-pip {
-      position: fixed;
-      left: 5px;
-      bottom: 5px;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #9aa0a6;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
+      position: fixed; left: 5px; bottom: 5px; width: 4px; height: 4px;
+      border-radius: 50%; background: var(--muted); opacity: 0; pointer-events: none;
     }
-
-    body.is-armed .armed-pip {
-      opacity: 0.55;
-    }
-
-    svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
+    body.is-armed .armed-pip { opacity: 0.55; }
+    svg { width: 22px; height: 22px; fill: currentColor; }
   </style>
 </head>
 <body>
-
   <div id="home-view">
     <div class="search-header">
       <div class="search-pill">
-        <span style="color:var(--icon);display:flex;">
-          <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-        </span>
+        <span style="color:var(--muted);display:flex;"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span>
         <input id="keep-search" type="text" placeholder="Search your notes" autocomplete="off" autocorrect="off" spellcheck="false" />
-        <span style="color:var(--icon);display:flex;">
-          <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
-        </span>
+        <span style="color:var(--muted);display:flex;"><svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg></span>
         <div class="avatar">M</div>
       </div>
     </div>
 
     <div class="section-label">Pinned</div>
-    <div class="notes-grid" id="pinned-grid" style="flex:0 0 auto; padding-bottom: 6px;">
+    <div class="notes-grid" id="pinned-grid" style="flex:0 0 auto;padding-bottom:6px;">
       <div class="note-card" id="open-word-note">
         <div class="card-title">Random Words</div>
         <div class="card-body" id="card-preview">anchor
@@ -378,10 +180,10 @@ Interstellar</div>
     </div>
 
     <div class="bottom-nav">
-      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34a.996.996 0 0 0-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 0 0 0-1.41z"/></svg>
-      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15a.998.998 0 0 0-.98-.85c-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08a6.993 6.993 0 0 0 5.91-5.78c.1-.6-.39-1.14-1-1.14z"/></svg>
-      <svg viewBox="0 0 24 24" style="color:var(--icon)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--muted)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--muted)"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34a.996.996 0 0 0-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 0 0 0-1.41z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--muted)"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15a.998.998 0 0 0-.98-.85c-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08a6.993 6.993 0 0 0 5.91-5.78c.1-.6-.39-1.14-1-1.14z"/></svg>
+      <svg viewBox="0 0 24 24" style="color:var(--muted)"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
       <div class="fab" id="fab-open">
         <svg viewBox="0 0 36 36" style="width:28px;height:28px;">
           <path fill="#34A853" d="M16 16v14h4V20z"/>
@@ -399,21 +201,13 @@ Interstellar</div>
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </button>
       <div class="topbar-right">
-        <button class="icon-btn" aria-label="Pin">
-          <svg viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>
-        </button>
-        <button class="icon-btn" aria-label="Reminder">
-          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-        </button>
-        <button class="icon-btn" aria-label="Archive">
-          <svg viewBox="0 0 24 24"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/></svg>
-        </button>
+        <button class="icon-btn" aria-label="Pin"><svg viewBox="0 0 24 24"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg></button>
+        <button class="icon-btn" aria-label="Reminder"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></button>
+        <button class="icon-btn" aria-label="Archive"><svg viewBox="0 0 24 24"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM12 17.5L6.5 12H10v-2h4v2h3.5L12 17.5zM5.12 5l.81-1h12l.94 1H5.12z"/></svg></button>
       </div>
     </div>
 
-    <div class="pull-indicator" id="pull-indicator">
-      <div class="pull-spinner" id="pull-spinner"></div>
-    </div>
+    <div class="pull-indicator" id="pull-indicator"><div class="pull-spinner" id="pull-spinner"></div></div>
 
     <div class="note-scroll-area" id="scroll-area">
       <div class="note-title">Random Words</div>
@@ -422,18 +216,12 @@ Interstellar</div>
 
     <div class="note-bottombar">
       <div class="bottom-left">
-        <button class="icon-btn" aria-label="Add">
-          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-        </button>
-        <button class="icon-btn" aria-label="Color">
-          <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-        </button>
+        <button class="icon-btn" aria-label="Add"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg></button>
+        <button class="icon-btn" aria-label="Color"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></button>
       </div>
       <div class="edited-stamp" id="edited-stamp">Edited 10:42 AM</div>
       <div class="bottom-right">
-        <button class="icon-btn" aria-label="More">
-          <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        </button>
+        <button class="icon-btn" aria-label="More"><svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
       </div>
     </div>
     <div class="armed-pip"></div>
@@ -441,92 +229,65 @@ Interstellar</div>
 
   <script>
     const RAW_WORDS = `
-      abacus abandon abbey abdomen ability aboard abolish abound abrasive abroad absence absent absolute absorb abstract absurd abundance academy accent accept access accident acclaim accommodate accompany accomplish accord account accurate accuse achieve acid acoustic acquire acrobat across acting action active actor actual acute adapt addict addition address adequate adhere adjacent adjust admin admire admission admit adopt adult advance advent adventure adverb advertise advice advise advocate aerial affair affect afford afraid after afternoon again against agency agenda agent agile aging agony agree ahead aiding ailment aiming airplane airport aisle alarm album alcohol alert algebra alien align alike alive alley alliance allow alloy allure almond almost alone along aloud alphabet alpine already also altar alter alternate although altitude aluminum always amass amateur amaze amazing amber ambient ambition ambulance ambush amend amenity amid ammonia among amount ample amuse analysis analyst anchor ancient angel anger angle angry animal ankle annex announce annual anonymous answer antenna anthem antique antiquity anxiety anxious apart apathy apology apparatus apparel appeal appear appetite applaud applause apple appliance apply appoint appreciate approach approval approve apricot april apron aquarium aquatic arcade arch architect archive arctic arena argue arid arise arithmetic armor aroma around arrange array arrest arrival arrive arrow arsenal artesian article artifact artificial artist artwork ascend ascent ashamed ashore aside asleep aspect asphalt aspire assault assemble assembly assert assess asset assign assist associate assume assure asteroid asthma astonish athlete atlas atmosphere atom atomic attach attack attain attempt attend attention attitude attorney attract attribute auction audience audio audit auditorium august aunt authentic author authority auto autumn auxiliary available avenue average aviation avoid awake award aware away awesome awful awkward awning axis axle
-      babble baboon baby bachelor backbone backdrop background backpack backward bacon bacteria badge badger baffle baggage bailout bakery balance balcony baldness ballad ballet balloon ballot bamboo banana bandage bandit bandwidth banjo banker banner banquet banter baptize bareback barefoot bargain barge barker barley barnacle barometer baron barrel barren barrier barter baseball basement basic basil basin basis basket bassoon batch bathhouse bathrobe bathroom battery battle bayonet beacon beagle beaker beam bearing beast beauty beaver become bedroom bedtime beehive beetle before began beginner beginning behalf behave behavior behind beige being belief believe bellhop bellow belly belong below beltway bench benchmark beneath benefit berry beside bestowal betray better between beverage beware beyond bicycle bidding bigfoot bikeway bilateral billboard billion binary binding binoculars biochemistry biography biology birch birdcage birthday biscuit bishop bison bitter bizarre blackberry blackbird blackboard blacksmith bladder blade blame blandish blanket blast blazer blazing bleach bleak blemish blend bless blindfold blink bliss blizzard blockade blogger blonde bloodhound blossom blouse bluebird blueprint bluff blunder blunt blurb blush boardroom boast boatyard bobbin bobcat bodice bodyguard bogey boilermaker boisterous boldness bologna bolster bombard bonanza bondage bonfire bonnet bonus bookcase bookkeeper booklet bookmark bookshelf bookstore boost booth border boredom borrow botanical botanist bottle bottom boulder bounce boundary bounty bouquet boutique bowling boxcar boxer boxing boycott bracelet bracket braid brainwash brake bramble branch brandish brass bravery breach breadwinner breakaway breakfast breakthrough breastplate breath breathe breeze breezy brewery briar bricklayer bridal bridge brief brigade bright brilliant brimstone bring brisk bristle broadcast broccoli brochure broken bronze brood brook broomstick brother brought brownie browse bruise brunette brush brutal bubble bucket buckle budget buffalo buffet bugle builder building built bulb bulge bulk bulldog bulldozer bullet bulletin bullfrog bumblebee bumper bunch bundle bungalow bunkhouse burden bureau burger burglar burial burlap burnish burrow burst busboy bushel business bustard bustle butcher buttercup butterfly buttermilk button buzzard buzzer buzzing bypass
-      cabaret cabbage cabin cabinet cable caboose cactus cadence cadet cafeteria caffeine cagey cajole cajun cakewalk calamity calcium calculate calendar caliber calibrate calico callous calmer calorie camcorder camel cameo camera camouflage campaign campfire camper camphor campus canal canary cancel cancer candid candidate candle candy cane canine canister cannon canoe canopy canvas canyon capable capacity cape capital capitol capsule captain caption captive capture caramel carat caravan carbon carcass cardamom cardboard cardiac cardinal career carefree careful careless cargo caricature carnival carol carpenter carpet carriage carrot carry cartwheel carve cascade cashew cashmere casino casket casserole cassette castaway castle casual catalog catalyst catapult catchup category cater caterpillar cathedral cattle causeway caution cavalier cavalry cavern caviar cavity cease cedar ceiling celebrate celebrity celery celestial cellar cello cement cemetery censor census centaur center centipede central century ceramic cereal ceremony certain certificate certify chainmail chairman chalet chalk chalkboard challenge chamber chameleon champion chance chandelier change channel chant chaos chapel chapter character charcoal charge chariot charity charm chart charter chase chasm chassis chatter cheap cheat checkbook checker checkout checkup cheek cheerfulness cheese cheetah chef chemical chemistry cherry cherub chess chestnut chew chickadee chicken chief childhood childish chili chill chimney chimpanzee chinaware chipmunk chirp chisel chivalry chocolate choice choir choke cholesterol choose chopstick chord chorus chosen chowder chrome chronic chronicle chuckle church churn cider cigar cilantro cinema cinnamon circle circuit circular circulate circumference circus cistern citadel citizen citrus civic civil civilian claim clammy clamp clan clandestine clarify clarinet clarity clash clasp classic classify classroom clatter clause claw clay clean cleanse clear clearance clearing clergy clerk clever click client cliff climate climax climb clinic clip cloak clockwork clone close closet closure cloth clothe clothing cloud clover clown club clump clumsy cluster clutch coach coal coalition coarse coast coastal coat cobbler cobra cobweb cockatoo cockpit coconut cocoon code coffee coffin cogwheel coherent coil coin coincide cold collaborate collapse collar colleague collect college collide collision cologne colonial colony color colossal colt column combat combine combustion comeback comedy comet comfort comic comma command commemorate commence comment commerce commercial commission commit committee commodity common commotion communicate community commute compact companion company compare compass compassion compel compensate compete competent compile complain complete complex complexion complicate compliment comply component compose composite composition compost compound comprehend compress comprise compromise compute computer comrade conceal concede conceive concentrate concept concern concert concession conclude concrete condemn condense condition conduct cone confer conference confess confidence confident confirm conflict conform confront confuse confusion congratulate congress connect conquer conquest conscience conscious consecutive consent consequence conserve consider consist console consonant conspiracy constant constitute construct consult consume contact contain contaminate contemporary contempt content contest context continent continue contract contradict contrary contrast contribute control controversy convenience convention conversation convert convey convict convince convoy cookout cool cooperate coordinate copper copy coral cord corduroy core corkscrew corn corner cornet corona corporal corporate corporation correct correspond corridor corrupt cosmic cosmos costume cottage cotton couch cougar cough council counsel count counter country countryside county couple coupon courage courier course court courtyard cousin cove covenant cover covert cowboy coyote cozy crab crackle cradle craft craftsman cranberry crane crash crate crater crave crawl crayon crazy creak cream create creation creative creator creature credit creed creek creep crescent crest crevice crew cricket crime criminal crimson cringe cripple crisis crisp criterion critic critical criticism critique crocodile crocus croquet crossroad crossword crouch crowbar crowd crown crucial crude cruel cruise crumb crumble crunch crusade crush crust crutch crystal cubby cube cuckoo cucumber cuddle culprit cultivate culture cumbersome cunning cupboard cupid curb cure curiosity curious curl currant current curriculum curry curse curtain curve cushion custard custom customer cutlass cutlery cutoff cycle cyclone cylinder cymbal cypress
-      dabble dachshund daffodil dagger daily dainty dairy daisy damage damselfly dance dandelion danger dangle daring darken darkness darling dashboard data database date daughter dawdle daylight dazzle dazzling deacon deadline deadly deafen dealer dealing debate debris debt debut decade decay deceit deceive december decent deception decide decimal decision decisive deck declare decline decode decorate decoration decoy decrease decree dedicate deduce deduct deed deepen deer defeat defect defend defense defensive defer defiance deficient define definite definition deflect deform defraud defy degenerate degrade degree deity deject delay delegate delete deliberate delicate delicious delight deliver delivery delta deluge deluxe demand demeanor democracy democrat demolish demon demonstrate denial denim denote dense density dentist deny depart department departure depend depict deplete deploy deport deposit depot depress deprive depth deputy derail derive descend describe desert deserve design designate designer desire desk desolate despair desperate despite dessert destination destiny destroy destruction detach detail detain detect detective detector detention deter detergent deteriorate determine detour detract devastate develop development device devil devise devote devour devout dewdrop diagnose diagonal diagram dial dialect dialogue diameter diamond diaper diary dice dictate dictionary diesel diet differ difference different difficult diffuse digest digital dignity dijon dilemma dilute dimension diminish dimple diner dinghy dinner dinosaur dioxide diploma diplomat direct direction director directory dirt disable disadvantage disagree disappear disappoint disaster discard discern discharge discipline disclose discomfort disconnect discontinue discount discourage discourse discover discovery discreet discrepancy discretion discuss discussion disease disguise disgust dish dishonest dishwasher disk dislike dismantle dismiss disorder dispatch dispel dispense disperse displace display disposal dispose dispute disregard disrupt dissolve distance distant distill distinct distinguish distort distract distress distribute district disturb ditch dive diverge diverse divide dividend divine division divorce dizzy dock doctor doctrine document dodge doghouse dogma doily dojo dolphin domain dome domestic dominant dominate donate donation donkey donor doodle doom doorstep doorway dosage double doubt dough dove downhill download downpour downtown downward dozen draft dragon dragonfly drain drama dramatic drape drastic draw drawer drawing dread dream dreary drench dress dresser dribble drift driftwood drill drink drip drive driveway drizzle drone droop drop drought drove drown drowsy drudge drumstick drunk dry dual dub duckling duct duel duet duke dull dummy dump dumpling dune dungeon duplicate duplex durable duration during dusk dust duty dwarf dwell dwindling dye dynamic dynasty
-      eager eagle eardrum early earmuff earn earnest earphone earring earth earthquake earthworm easel easily eastbound eastern easygoing eater eavesdrop eccentric echo eclipse ecology economic economy ecosystem ecstasy edge edible edict edition editor educate education eel eerie effect effective efficiency efficient effort eggplant ego eight eighteen eighty either eject elaborate elastic elbow elder elderly elect election electric electricity electronic elegance elegant element elephant elevate elevation elevator eleven eligible eliminate elite elk ellipse elm eloquence eloquent elsewhere elude email embark embarrass embassy embed embellish ember emblem embody embrace embroider emerald emerge emergency emigrate eminent emotion emotional emperor emphasis emphasize empire employ employee employer employment empower empty emulate enable enact enamel enchant enclose enclosure encore encounter encourage encyclopedia endanger endeavor ending endless endorse endow endurance endure enemy energetic energy enforce engage engagement engine engineer engrave engross enhance enigma enjoy enjoyable enlarge enlighten enlist enormous enough enquire enrich enroll ensemble ensure entail entangle enter enterprise entertain enthusiasm entire entitle entity entrance entrap entreat entry envelop envelope environment envy enzyme epic epidemic episode equal equality equator equilibrium equip equipment equity equivalent era eradicate erase erect erosion errand erratic error erupt escalate escape escort especially essay essence essential establish estate esteem estimate eternal ethics ethnic etiquette evacuate evade evaluate evaporate evasion even evening event eventual ever evergreen everyday everyone everything everywhere evidence evident evil evoke evolution evolve exact exactly exaggerate exam examine example exceed excel excellent except exception excess exchange excite excitement exclaim exclude exclusive excuse execute executive exempt exercise exert exhaust exhibit exile exist existence exit exotic expand expanse expect expedition expel expense expensive experience experiment expert expire explain explicit explode exploit explore explosion export expose exposure express extend extension extensive extent exterior external extinct extra extract extreme exuberant eye eyebrow eyelash eyelid eyewitness
-      fable fabric fabricate facade face facilitate facility facsimile fact faction factor factory factual faculty fade fail failure faint fair fairy faith faithful fake falcon fall fallacy fallout falsehood falsify falter fame familiar family famine famous fanatic fancy fang fantasy farewell farm farmer farmhouse farmland fashion fast fasten fatal fate father fatigue faucet fault favor favorable favorite fawn fear fearful feast feather feature february federal federation fee feeble feed feedback feel feline fellow fellowship female feminine fence fend ferment fern ferocious ferry fertile fertilizer festival festive fetch fever few fiance fiber fiction fiddle fidelity field fierce fifteen fifty fig fight figure filament file fill fillet film filter filth final finale finance financial finch find finding fine finger finish finite fir firefly fireplace firewood firework firm first fiscal fish fisherman fist fit fitness five fix fixing fixture fizzle flag flagpole flake flame flamingo flank flannel flap flare flash flashlight flask flat flatter flavor flaw flax flea flee fleece fleet flesh flexible flexing flicker flight flimsiness fling flint flip flirt float flock flood floor flora floral florist floss flour flourish flow flower fluctuate fluency fluent fluff fluid fluke fluorescent flush flute flutter foam focus fodder fog foil fold foliage folk follow follower folly fond food fool foolish foot football footprint footstep footwear forage forbid force forecast forefront forehead foreign foreigner foreman foremost forensic forest forever forge forget fork form formal format formation former formula forsake fort forth fortify fortress fortunate fortune forty forum forward fossil foster fought foul found foundation founder fountain four fourteen fourth fox foxglove foxhound fraction fracture fragile fragment fragrance fragrant frail frame framework franchise frank frantic fraud fray freak freckle free freedom freelance freeway freeze freezer freezing freight french frenzy frequent fresh freshman friction friday friend friendly friendship frieze fright frighten frigid fringe frizz frog frolic from front frontier frost frown frozen frugal fruit frustrate fry fudge fuel fugitive fulfill full fume fun function fund fundamental funeral fungus funnel funny fur furious furnace furnish furniture furrow further fury fuse fusion fuss future fuzzy
-      gadget gain galaxy gale gallery gallon gallop gamble game gamma gander gang garage garbage garden gargle garlic garment garnish garrison garter gas gasket gasoline gasp gate gateway gather gauge gauntlet gauze gavel gazelle gazebo gazette gear gecko gel gelatin gem gender general generate generation generous genetic genius gentle gentleman genuine geography geology geometry geranium germ germinate gesture get geyser ghost giant gift gigantic giggle gild gill ginger giraffe girder girdle girl give glacier glad glade gladiator glamour glance gland glare glass glazing gleam glean glee glen glide glimmer glimpse glisten glitter gloat global globe gloom glorious glory gloss glove glow glucose glue glum glutton gnarl gnash gnat gnaw goal goalkeeper goat goblet goblin gold golden goldfish golf gondola gone gong good goodbye goodness goods goodwill goose gorge gorgeous gorilla gospel gossip got gouge gourd govern government governor gown grab grace graceful gracious grade gradient gradual graduate grain grammar grand grandchild granddaughter grandfather grandmother grandparent grandson granite grant grape grapefruit graphic grapple grasp grass grasshopper grateful gratitude grave gravel gravity gravy gray graze grazing grease great greed greedy green greenhouse greet greeting grenade grey grid grief grievance grieve grill grim grimace grin grind grip gripe grit grizzly groan grocer grocery groom groove grope gross ground group grove grow growl growth grub grudge gruel gruesome grumble grumpy guarantee guard guardian guess guest guidance guide guild guilt guilty guitar gull gulp gum gun gunpowder gurgle gust gutter guy gymnasium gymnastics gypsy
-      habit habitat habitual hack haddock hail haircut hairdresser hairpin half halibut hall hallelujah hallway halo halt halve hammer hammock hamper hamster hand handbag handbook handful handicap handkerchief handle handmade handshake handsome handwriting handy hang hangar hanger happen happiness happy harass harbor hard harden hardship hardware hardy hare harm harmony harness harp harpoon harsh harvest haste hasty hatch hatchet hate hatred haul haunt haven havoc hawk hay hazard hazardous hazel hazy head headache heading headlight headline headquarters heal health healthy heap hear hearing heart heartbeat hearth heartily heat heater heath heather heave heaven heavenly heavy hedge hedgehog heed heel height heirloom helicopter helium helix hello helmet help helpful helpless hemisphere hemp hen hence herald herb herd here heritage hermit hero heroic heroism herring hesitate hexagon hibernate hiccup hidden hide hideous hierarchy high highlight highway hijack hike hilarious hill hillside hilt hinder hinge hint hippopotamus hire historian historic history hitch hive hoarse hoax hobble hobby hobo hockey hoe hog hoist hold holder hole holiday hollow holly hologram holster holy home homeland homeless homemade homesick hometown homework honest honesty honey honeycomb honeymoon honor honorable hood hoof hook hoop hop hope hopeful hopeless horizon horizontal horn hornet horrible horror horse horseshoe hose hospitable hospital host hostage hostel hostile hot hotel hound hour hourglass house household housekeeper housing hover how howl hub huddle hug huge hull human humane humanity humble humid humidity humor hump hundred hunger hungry hunt hunter hurdle hurl hurricane hurry hurt husband hush husk hustle hybrid hydrant hydraulic hygiene hymn hyperbole hyphen hypnosis hypothesis hysterical
-      iceberg icicle icon icy idea ideal identical identification identify identity ideology idiom idiot idle idol ignite ignorance ignorant ignore iguana ill illegal illegible illness illuminate illusion illustrate illustration image imaginary imagination imagine imitate imitation immature immediate immense immerse immigrant immigration immune impact impair impart impatient impeach impede impel impending imperative imperfect imperial implement implicate implicit imply import importance important impose impossible impress impression impressive imprint imprison improve improvement impulse impure inability inaccessible inaccurate inactive inadequate inadvertent inappropriate incapable incentive inception inch incident incline include inclusion inclusive income incoming incompatible incomplete inconsistent incorporate incorrect increase incredible incur indeed indefinite indent independence independent index indicate indication indicator indictment indifferent indigenous indignant indirect indispensable individual indoor induce indulge industrial industry inefficient inevitable inexpensive infant infantry infect infection infer inferior infinite infinity inflame inflate inflation inflict influence influential influx inform informal information infrastructure infrequent infringe ingenious ingredient inhabit inhabitant inherent inherit inhibition initial initiate inject injection injure injury injustice ink inland inlet inmate inn inner innocence innocent innovation input inquire inquiry inquisition inquisitive insane insect insecure insert inside insight insignia insignificant insincere insist insolent inspect inspection inspector inspiration inspire install installment instance instant instead instinct institute institution instruct instruction instructor instrument insufficient insult insurance intact intake integral integrate integrity intellect intellectual intelligence intelligent intend intense intensity intent interact interaction intercept interchange intercourse interest interfere interior intermediate internal international internet interpret interpretation interrupt interval intervene interview intimate intimidate into intolerable intonation intrigue intrinsic introduce introduction intrusion intuition invade invalid invaluable invasion invent invention inventor inventory inverse invert invest investigate investigation investor invisible invitation invite invoice invoke involve inward iron ironic irony irregular irrelevant irresistible irresponsible irrigate irritate island isolate isolation issue item ivory ivy
-      jackal jacket jade jagged jaguar jail jam january jar jargon jasmine jaunty jaw jay jazz jazziest jealous jealousy jeans jeep jelly jellyfish jerk jersey jest jester jet jewel jeweler jewelry jigsaw jingle job jockey jog join joint joke jolly jolt journal journalism journalist journey jovial joy joyful joyous jubilant judge judgment judicial juggle juice juicy jukebox july jump junction june jungle junior juniper junk jurisdiction jury just justice justify juvenile
-      kaleidoscope kangaroo kayak keel keen keep keeper keg kelp kennel kernel kettle key keyboard keyhole keynote keypad khaki kick kid kidnap kidney kill kilogram kilometer kin kind kindergarten kindle kindly kindness kindred king kingdom kink kiss kit kitchen kite kitten kiwi knee kneel knife knight knit knob knock knot know knowledge knuckle koala
-      label labor laboratory labyrinth lace lack lacquer ladder ladle lady ladybug lagoon lair lake lamb lament lamp lance land landfill landing landlord landmark landscape lane language lantern lap lapse laptop larceny lard large lark larva laser lash lasso last latch late lately latent lateral lather latitude latter lattice laugh laughter launch laundry laurel lava lavender law lawful lawn lawsuit lawyer laxative layer layout lazy lead leader leadership leading leaf leaflet league leak lean leap learn learning lease leash least leather leave lecture ledge leech leek left legacy legal legend legible legion legislate legislation legitimate leisure lemon lemonade lend length lengthen lens lentil leopard less lessen lesson let lethal letter lettuce level lever levy liable liaison liar liberal liberate liberty librarian library license lick lid lie lieutenant life lifebuoy lifeguard lifeless lifetime lift light lighthouse lightning like likelihood likely likeness likewise lilac lily limb limbo lime limelight limit limitation limp line linen liner linger lining link lion lip liquid liquor list listen listener literal literary literature litter little live lively liver livestock lizard load loaf loan loathe lobby lobster local locality locate location lock locker locket locomotive locust lodge loft lofty log logic logical loneliness lonely long longitude look lookout loom loop loose loosen loot lord lose loss lost lot lotion lottery loud lounge louse lovable love lovely lover low lower loyal loyalty luck lucky luggage lukewarm lullaby lumber luminous lump lunar lunch luncheon lung lure lurk lush luster luxury lyric
-      macaroni machine machinery mackerel mad madam magazine magic magical magician magistrate magnet magnetic magnificent magnify magnitude mahogany maid maiden mail mailbox main mainland mainly maintain maintenance maize majestic majesty major majority make maker makeup malice malicious mall mallet mammal mammoth man manage management manager mandate maneuver mango manhood mania manicure manifest manipulate mankind manner mansion manual manufacture manuscript many map maple marathon marble march mare margin marigold marine mariner mark market marketplace marmalade maroon marquee marquis marriage marrow marry marsh marshal marshmallow martial martyr marvel marvelous mascot masculine mash mask mason masquerade mass massacre massage massive mast master masterpiece mastery mat match mate material maternal math mathematics matter mattress mature maturity maxim maximum may maybe mayor maze meadow meager meal mean meaning meaningful meanwhile measure measurement meat mechanic mechanical mechanism medal meddle media mediate medical medication medicine medieval mediocre meditate meditation medium medley meek meet meeting melancholy mellow melody melon melt member membership membrane memento memo memoir memorable memorial memorize memory menace mend mental mentality mention menu merchandise merchant merciful mercy mere merely merge merit mermaid merry mesh mess message messenger metal metaphor meteor meter method metric metropolis microphone microscope microwave midday middle midnight midst might mighty migrate mild mildew mile milestone military milk mill millennium miller millionaire mimic mince mind mindful mine miner mineral mingle miniature minimal minimum minister ministry minor minority mint minus minute miracle mirage mirror mirth mischief miserable misery misfortune misgiving mislead misplace miss missile mission mist mistake mister mistletoe mistress mistrust misty misunderstand misuse mitten mix mixer mixture moan moat mob mobile mobility mobilize mock mode model moderate modern modest modify moist moisture mold molecule moment momentary momentum monarch monarchy monastery monday money monitor monk monkey monopoly monster month monthly monument mood moody moon moonlight moor moose mop moral morale morality moreover morning mortal mortar mosaic mosquito moss most motel moth mother motion motivate motive motor motorcycle motto mound mount mountain mourn mouse mouth move movement movie mow much mucus mud muffin mug mule multiple multiply multitude mumble mummy munch mundane municipal mural murder murmur muscle museum mushroom music musical musician muskrat muss mustache mustard mute mutiny mutter mutton mutual muzzle mystery mystic myth mythology
-      nail naive naked name namely nap napkin narrate narrative narrow nasty nation national native natural nature naughty naval navigate navigation navy near nearby nearly neat nebula necessary necessity neck necklace nectar need needle needless needy negative neglect negotiate neighbor neighborhood neither neon nephew nerve nervous nest net network neutral never nevertheless newborn newcomer newlywed news newsletter newspaper next nibble nice nick nickname niece night nightclub nightfall nightmare nine nineteen ninety ninth nitrogen nobility noble nobody nocturnal nod noise noisy nomad nominal nominate none nonsense noodle noon normal normally north northeast northern northwest nose nostril notable notably notation notch note notebook nothing notice notify notion notorious noun nourish novel novelty november novice now nowadays nowhere nozzle nuclear nucleus nudge nugget nuisance numb number numerous nun nurse nursery nurture nut nutmeg nutrient nutrition nutshell nylon
-      oak oar oasis oat oatmeal obedience obedient obey object objection objective obligation oblige oblique obscure observation observe observer obsession obsolete obstacle obstruct obtain obvious occasion occasional occupation occupy occur ocean october octopus odd odor offend offense offensive offer offering office officer official offset offspring often oil ointment okay old olive omelet omen omission omit once one onion online only onset onto onward ooze oozing opaque open opening opera operate operation operator opinion opponent opportunity oppose opposite opposition oppress optical optimism optimistic option oral orange orbit orchard orchestra orchid order orderly ordinary ore organ organic organism organization organize origin original ornament orphan ostrich other otherwise otter ought ounce our out outcome outcry outdoor outer outfit outgoing outing outlaw outlet outline outlook output outrage outside outsider oval oven over overall overcome overflow overhead overlap overlook overnight overseas overtake overthrow overtime overview overwhelm owe owl own owner ownership ox oxygen oyster ozone
-      pace pack package packet pact paddle padlock pagan page pageant paid pail pain painful paint painter painting pair palace pale palette palm pamphlet pan pancake panda panel panic panorama panther pantry paper parachute parade paradise paradox paragraph parallel paralyze parcel pardon parent park parliament parlor parrot part partial participate particle particular partly partner partnership party pass passage passenger passion passive passport password past pasta paste pastime pastry pasture pat patch patent path pathetic patience patient patrol patron pattern pause pave pavilion paw pawn pay payment pea peace peaceful peach peacock peak peanut pear pearl peasant pebble pecan peck peculiar pedal pedestrian peek peel peer peg pelican pellet pen penalty pencil pendulum penetrate penguin peninsula penny pension people pepper perceive percent percentage perception perch perfect perfection perform performance performer perfume perhaps peril perimeter period periodic permanent permission permit perpetual perplex persecute persevere persist person personal personality perspective persuade pest pester pet petal petition petrify petroleum petty phantom pharmacy phase pheasant phenomenon philosopher philosophy phone photo photograph photographer phrase physical physician physics piano piazza pick picket pickle picnic picture pie piece pier pierce pig pigeon pigment pile pilgrim pill pillar pillow pilot pin pinch pine pineapple pink pinnacle pioneer pious pipe pipeline pique pirate pistol piston pit pitch pitcher pity pivot pizza pizzeria place placid plague plain plaintiff plan plane planet plank plant plantation plaque plaster plastic plate plateau platform platinum platter play player playful playground plea plead pleasant please pleasure pledge plenty pliers plot plow pluck plug plum plumber plume plump plunder plunge plural plus plush pneumonia pocket pod poem poet poetry point poison poke polar pole police policy polish polite political politician politics pollen pollute pollution polo polyester pomegranate pompous pond ponder pony pool poor pop popcorn pope popular popularity population porcelain porch porcupine pore pork port portable portal porter portion portrait portray pose position positive possess possession possibility possible post postage postal postcard poster postpone posture pot potato potent potential pottery pouch poultry pound pour poverty powder power powerful practical practice prairie praise prank prawn pray prayer preach precaution precede precious precise precision predator predict prediction preface prefer preference pregnant prejudice preliminary prelude premature premier premise premium preparation prepare prescribe prescription presence present presentation preserve preside president press pressure prestige presume pretend pretty prevail prevent previous prey price pride priest primary prime primitive prince princess principal principle print printer prior priority prism prison prisoner privacy private privilege prize probable probably problem procedure proceed process procession proclaim produce producer product production productive profession professional professor profile profit profound program progress prohibit project projector prolong prominent promise promote prompt prone prong pronounce proof prop propaganda propel proper property prophecy prophet proportion proposal propose prosecute prospect prosper prosperity protect protection protein protest proud prove proverb provide province provision provoke proxy prune psalm psychology pub public publication publicity publish pudding puddle puff pull pulley pulp pulse pump pumpkin punch punctual puncture punish punishment pupil puppet puppy purchase pure purify purple purpose purse pursue pursuit push puzzle puzzling pyramid
-      quail quaint quake qualification qualify quality quantity quarantine quarrel quarry quarter quartet quartz queen queer quench query quest question queue quick quiet quill quilt quince quit quite quiver quiz quizzical quota quotation quote
-      rabbi rabbit raccoon race racial rack racket radar radial radiate radiation radiator radical radio radish radius raffle raft rage raid rail railroad railway rain rainbow raincoat rainfall raise raisin rake rally ram ramble ramp ranch random range rank ransom rapid rare rarely rascal rash raspberry rat rate rather rating ratio ration rational rattle raven raw ray razor reach react reaction read reader readily reading ready real realistic reality realize really realm reap rear reason reasonable rebel rebellion rebuild recall receipt receive recent reception recess recipe recipient recite reckless recognize recommend record recorder recover recovery recreation recruit rectangle rectangular recur red redeem reduce reduction reed reef reel refer referee reference refine reflect reflection reform refrain refresh refrigerator refuge refugee refund refusal refuse regain regard regardless regime region regional register regret regular regulate regulation rehearsal rehearse reign reinforce reject rejection rejoice relate relation relationship relative relax relaxing relay release relevant reliable reliance relief relieve religion religious relish reluctant rely remain remainder remark remarkable remedy remember remind reminder remnant remote removal remove render renew renounce rent repair repay repeat repel repent replace replacement reply report reporter represent representative reproduce reptile republic reputation request require requirement rescue research researcher resemble resent reservation reserve reservoir reside residence resident resign resist resistance resolution resolve resort resource respect respective respond response responsibility responsible rest restaurant restless restore restrain restrict restriction result resume retail retain retire retirement retreat retrieve return reunion reveal revenge revenue reverence reverse review revise revival revive revolt revolution reward rhetoric rhythm rib ribbon rice rich riddle ride rider ridge ridicule ridiculous rifle rig right righteous rigid rigor rim ring rinse riot rip ripe ripple rise risk risky ritual rival river road roam roar roast rob robber robbery robe robin robot robust rock rocket rocky rod rodent rogue role roll roller romance romantic roof room rooster root rope rose rot rotate rotation rotten rough round route routine rover row royal rub rubber rubbish ruby rudder rude rug rugged ruin rule ruler rumor run runway rural rush rust rustic ruthlessness rye
-      sabbath saber sack sacred sacrifice sad saddle sadness safe safeguard safety saffron sag sage sail sailor saint sake salad salary sale salmon salon salt salute salvation same sample sanction sanctuary sand sandal sandbox sandwich sane sanitary sanity sapphire sarcasm sardine sash satin satire satisfaction satisfy saturate saturday sauce saucer sauna sausage savage save savings savior savor saw saxophone say scaffold scale scalp scandal scar scarce scare scarf scarlet scatter scene scenery scent schedule scheme scholar scholarship school science scientific scientist scissors scoff scold scoop scope scorch score scorn scorpion scout scowl scramble scrap scrape scratch scream screen screw script scroll scrub sculpture sea seal seam search season seat second secondary secret secretary section sector secure security see seed seek seem segment seize seizure seldom select selection self selfish sell seller semester senate senator send senior sensation sense sensible sensitive sentence sentiment separate separation september sequel sequence sequin sequoia serene serenity serial series serious servant serve service session set settle settlement seven seventeen seventy several severe sew shade shadow shady shaft shake shallow shame shape share shark sharp shatter shave shawl shear shed sheep sheer sheet shelf shell shelter shepherd sheriff shield shift shimmer shine shiny ship shipwreck shirt shiver shock shoe shoot shop shore short shortage shorten shortly shorts shot shoulder shout shove shovel show shower shred shrewd shriek shrill shrimp shrine shrink shroud shrub shrug shudder shuffle shun shut shutter shuttle shy sick sickness side sidewalk siege sigh sight sign signal signature significance significant silence silent silk silly silver similar simple simplicity simplify simply simulate simultaneous sin sincere sing singer single singular sink sip siren sister sit site situation six sixteen sixty size skate skeleton sketch ski skill skillet skillful skin skip skirt skull skunk sky skyscraper slab slack slam slander slap slash slate slaughter slave sled sleek sleep sleeve slender slice slick slide slight slim slime sling slip slipper slippery slit slope slot slow slum slumber slump sly smack small smart smash smear smell smile smoke smooth smudge snack snail snake snap snare snarl snatch sneak sneer sneeze sniff snore snout snow snowball snowflake snowman snug soak soap soar sob sober soccer social society sock socket soda sofa soft soften software soil solar soldier sole solemn solicit solid solitary solitude solo solution solve somber some somebody somehow someone something sometime somewhat somewhere son song sonic soon soothe sophisticated soprano sore sorrow sorry sort soul sound soup sour source south southeast southern southwest souvenir sovereign sow space spacious spade span spank spare spark sparkle sparrow sparse spawn speak speaker spear special specialist specialty species specific specify specimen spectacle spectacular spectator spectrum speech speed spell spend sphere spice spider spike spill spin spinach spine spiral spirit spiritual spit spite splash splendid splendor split spoil spoke sponge sponsor spontaneous spoon sport spot spotlight spouse spray spread spring sprinkle sprint sprout spur spurn spy squad square squash squat squeak squeeze squirrel stab stability stable stack stadium staff stage stagger stain stair stake stale stalk stall stammer stamp stand standard standing staple star starch stare stark start startle starve state statement static station stationary statistics statue status stay steady steak steal steam steel steep steer stem step stereo sterile stern stew stick sticky stiff stifle still stimulate sting stink stir stitch stock stocking stomach stone stool stoop stop storage store storm story stout stove straight strain strait strand strange stranger strap strategy straw strawberry stray streak stream street strength strengthen stress stretch strict stride strike string strip stripe strive stroke stroll strong structure struggle stubborn stuck student studio study stuff stumble stump stun stunt stupid sturdy style subject subjective submarine submit subscribe subscription subsequent subside substance substantial substitute subtle suburb subway succeed success successful succession successive such suck sudden suddenly sue suffer sufficient sugar suggest suggestion suicide suit suitable suitcase suite sulfur sum summarize summary summit summon sun sunburn sunday sunflower sunlight sunny sunrise sunset sunshine super superb superficial superior supermarket supervise supervision supper supplement supply support suppose supreme sure surface surge surgeon surgery surname surpass surplus surprise surrender surround survey survive suspect suspend suspicion sustain swallow swamp swan swap swarm sway swear sweat sweater sweep sweet swell swift swim swing switch sword syllable symbol sympathetic sympathy symphony symptom synchronize syndicate synonym system
-      tab table tablet tackle tact tag tail tailor take tale talent talk tall tame tan tangle tank tap tape tapestry tar target tariff task taste tavern tax taxicab taxiway tea teach teacher teacup team tear tease technical technician technique technology tedious teen teenager teeth telegram telegraph telephone telescope television tell temper temperature temple temporary tempt temptation ten tenant tend tendency tender tennis tenor tense tension tent tenth term terminal terminate terrace terrible terrify territory terror test testify testimony textbook textile texture thank thanksgiving thaw theater theft theme themselves then theology theory therapy there thereby therefore thermometer these thesis thick thief thigh thin thing think third thirst thirsty thirteen thirty this thorn thorough those though thought thoughtful thousand thread threat threaten three threshold thrift thrill thrive throat throne through throughout throw thrust thumb thunder Thursday thus tick ticket tickle tide tidy tie tiger tight tighten tile till tilt timber time timeline timely timer timetable timid tin tiny tip tiptoe tire tired tissue title toad toast tobacco today toddler toe together toil token tolerance tolerate tomato tomb tomorrow ton tone tongue tonight too tool tooth top topic topaz torch torment tornado torrent tortoise torture toss total touch tough tour tourism tourist tournament tow toward towel tower town toxic toxin toy trace track tractor trade tradition traditional traffic tragedy tragic trail trailer train training trait traitor tram trample tranquil transaction transfer transform transition translate translation transmit transparent transport trap trapeze trash travel tray treachery tread treasure treasurer treasury treat treatment treaty tree tremble tremendous trench trend trial triangle tribe tribunal tribute trick trickle trifle trigger trim trinity trio trip triple triumph trivial trolley troop trophy tropical trouble trough trousers trout truce truck true truly trumpet trunk trust truth try tub tube tuck tuesday tug tuition tulip tumble tuna tune tunnel turban turkey turmoil turn turnip turtle tuxedo twelve twenty twice twig twilight twin twinkle twist two type typewriter typical tyranny tyrant
-      ugly ultimate umbrella umpire unable unacceptable unanimity unanimous unarmed unavailable unavoidable unaware unbalanced unbearable unbeatable unbelievable uncertain uncertainty uncomfortable uncommon unconcerned unconditional unconscious unconventional uncover undecided undeniable under undergo undergraduate underground undergrowth underline underlying undermine underneath understand understanding undertake underwater underwear undesirable undo undoubtedly uneasy unemployed unemployment unequal uneven unexpected unfair unfaithful unfamiliar unfavorable unfinished unfortunate unfortunately unfriendly unhappy unhealthy uniform unify union unique unit unite unity universal universe university unjust unknown unlawful unless unlike unlikely unlimited unlock unlucky unmarried unnecessary unpleasant unpopular unpredictable unprepared unreasonable unrelated unreliable unrest unsafe unsatisfactory unseen unselfish unsettled unsigned unskilled unstable unsteady unsuccessful unsuitable unsure unusual unwilling unwisely unwrap up update upgrade uphold upon upper upright uproar upset upside upstairs upward uranium urban urge urgent usage use useful useless user usual usually utility utilize utmost utter utterly
-      vacancy vacant vacate vacation vaccinate vaccine vacuum vague vain valid validate valley valuable value valve van vanilla vanish vanity vanquish vapor variable variation variety various varnish vary vase vast vault vector vegetable vegetarian vegetation vehicle veil vein velocity velvet vendor vengeance venom venture verb verbal verdict verge verify versatile verse version versus vertical very vessel vest veteran veto vexing via vibrant vibrate vibration vice vicinity vicious victim victory video view viewer viewpoint vigor vigorous village villain vine vinegar vineyard vintage violate violation violence violent violet violin virtual virtue virus visible vision visit visitor visual vital vitamin vivid vocal vocation voice void volcano volleyball volt volume voluntary volunteer vote voter vow vowel voyage vulgar vulnerable
-      wade wafer waffle wag wage wagon waist wait waiter waitress wake walk walker wall wallet walnut waltz wander want war wardrobe warehouse warfare warm warmth warn warning warp warrant warrior wary wash washer wasp waste watch watchful water waterfall watermelon waterproof wave wax waxing way weak weaken weakness wealth wealthy weapon wear weary weather weave web wedding wedge wednesday weed week weekday weekend weekly weep weigh weight weird welcome welfare well west western wet whale wharf what wheat wheel wheelchair when whenever where whereas wherever whether which while whim whimper whip whirl whisper whistle white who whoever whole wholesale wholesome whom whose why wicked wide widen widespread widow width wife wild wilderness wildlife willful will willow win wind windmill window windshield windy wine wing wink winner winter wipe wire wisdom wise wish wit witch with withdraw within without witness wizard wizardry wobble woe wolf woman wonder wonderful wood wooden woodpecker wool word work worker workshop world worldwide worm worry worse worship worst worth worthless worthy would wound wrap wrath wreath wreck wrench wrestle wrinkle wrist write writer writing wrong
-      yacht yard yarn yawn year yearly yeast yell yellow yes yesterday yet yield yoga yolk young youngster your yourself youth youthful
-      zeal zealous zebra zero zest zigzag zinc zipper zodiac zombie zone zoo zoom
-    `.trim().split(/\s+/).map(w => w.toLowerCase());
+      abacus academy adapter agate alarm amaze apart avatar aware beach blanket board brand chain coach craft diary drama exact feast flame giant glass grain
+      abbey album amber arbor baboon cabin cobra cubic debit elbow ember fable fiber goblet habit hobby label lobby noble orbit pebble ribbon robot table
+      accent anchor arctic bacon biceps cactus cycle decade doctor excuse factor fiction focus jacket lactose local lucky machine nectar nickel orchid packet picnic rocket
+      addict audio badge cedar cider code dodge endure fiddle fudge gadget hidden index judge kidney ladder lodge medal model paddle pedal radar riddle video
+      agency alert arena avenue bleach breeze cheek clerk creek dream elect enemy field fleece fresh gleam green guest ideal item kneel ocean opera piece
+      baffle before buffet coffee defend effort gift infinite left lift muffin office refuge rifle safety sofa suffer wafer
+      angel argue august bagel begin bogey bugle cigar digit dogma eagle eight engine foggy giggle juggle lagoon legacy logic magic mighty night organ pagoda
+      ashamed bahama behind bohemian cohort dehydrate echo exhale inhale mahogany mohawk rehearse sahara scheme sphere unhappy uphold vehicle
+      acid alibi animal blind brick build child climb coin crime dairy drift editor emigrate epic exit fairy flint glide grind guide icicle idiom joint
+      adjacent adjust cajun enjoy hijack inject injure major mojito object pajamas reject sojourn
+      ankle bakery bike cake duke fake hike joker lake liken maker naked poker rake sake taken token viking wake woken
+      ablaze alley atlas ballet below bullet calm cello color delay dolphin eclipse falcon fellow filter follow galaxy golden helmet hollow igloo island jelly melon
+      admit almond armor bamboo camel cement comet damage demon domain famine female gamble gymnast hammer human jumbo lemon limit lumber mimic moment nomad someone
+      annual aunt banana bench binary bonus candle center cinema concert dance denim dinner donut fancy fence final funny gentle gondola handle honey hunger ignore
+      abode acorn adopt agony alone aroma atom avocado awoke block broom choir clock crown drone exotic float frost ghost globe grove irony ivory knock
+      apple aspen baptize captain copper cupid depth diploma empty export guppy happy hippo impact input jupiter laptop maple moped napkin nephew orphan paper rapid
+      acquire coquette esquire inquiry liquid pique request roque sequel tequila toque vaquero
+      aerial agree airway apron arrow aurora barrel berry birch border burger carrot cereal circus coral curtain derive dirty dormant during earth error europe farmer
+      absent asset basic beside bison bosom castle cosmic custom desert disco dusk easel essay fasten festival fiscal fossil gasket gossip haste history hostel husk
+      acting after altar anthem artist attic author batch better bitter bottle butter cattle citrus cotton data detail ditto duty eater entire extra father fetch
+      abundant acute adult alumnus amuse aquatic blush brush cause chunk clump couch crush double drunk equal erupt fault flush found fruit gauge grump haunt
+      advice anvil bevel bovine caviar civic cover david devil diver envy favor fever gavel giver haven hover java jovial lava level liver lover movie
+      always beware bowel cowboy dawdle down fawn fowl gown hawk howl inward jewel kiwi lawful lower mower newt nowhere onward pawn pewter power reward
+      anxiety boxer fixing hexagon luxury maxim mixer next pixel sixth taxi text toxic tuxedo vixen waxing
+      abyss bayou beyond boycott coyote crystal dryad foyer kayak layer loyal mayor onyx payment rhythm royal scythe shyly soybean style thyme tryst voyage
+      buzzard cozy dazzle dozen enzyme fizzle fuzzy gazelle hazard jazz lizard maze nozzle pizza puzzle razor sizzle wizard
+    `.trim().split(/\s+/);
 
     const BUCKETS = {};
-    const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    ALPHABET.forEach(ch => { BUCKETS[ch] = []; });
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(c => BUCKETS[c] = []);
+    const NORMAL_POOL = [...new Set(RAW_WORDS)];
+    NORMAL_POOL.forEach(w => BUCKETS[w[2].toUpperCase()]?.push(w));
 
-    const seenSet = new Set();
-    for (const w of RAW_WORDS) {
-      if (w.length >= 4 && !seenSet.has(w)) {
-        seenSet.add(w);
-        const third = w[2].toUpperCase();
-        if (BUCKETS[third]) {
-          BUCKETS[third].push(w);
+    function buildCycleList(src, count = 450) {
+      if (!src || !src.length) return [];
+      const out = [];
+      let prev = '';
+      while (out.length < count) {
+        const pool = src.slice();
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        while (pool.length && out.length < count) {
+          let idx = pool.findIndex(w => w !== prev && w[0] !== prev[0]);
+          if (idx === -1) idx = pool.findIndex(w => w !== prev);
+          if (idx === -1) idx = 0;
+          const pick = pool.splice(idx, 1)[0];
+          out.push(pick);
+          prev = pick;
         }
       }
+      return out;
     }
 
-    const NORMAL_POOL = Array.from(seenSet);
-
-    function shuffle(arr) {
-      const a = arr.slice();
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    function buildCycleList(sourceWords, targetCount = 2200) {
-      if (!sourceWords || sourceWords.length === 0) return [];
-      const result = [];
-      let prevLast = null;
-
-      while (result.length < targetCount) {
-        const cycle = shuffle(sourceWords);
-        if (cycle.length > 1 && cycle[0] === prevLast) {
-          [cycle[0], cycle[1]] = [cycle[1], cycle[0]];
-        }
-        for (let i = 0; i < cycle.length && result.length < targetCount; i++) {
-          result.push(cycle[i]);
-        }
-        prevLast = result[result.length - 1];
-      }
-      return result;
-    }
-
-    const TOTAL_ROWS = 2200;
-    const ROW_HEIGHT = 32;
-    const PAUSE_MS = 6000;
-
-    let targetName = '';
-    let isArmed = false;
-    let letterIdx = -1;
-    let hasScrolledSinceStep = false;
-    let readyToAdvance = false;
-    let pauseTimer = null;
-    let bounceIgnoreUntil = 0;
-
-    let currentWords = [];
-    let pendingWords = null;
-    let lockedRange = null;
+    const TOTAL_ROWS = 450, ROW_HEIGHT = 32, PAUSE_MS = 6000;
+    let targetName = '', isArmed = false, letterIdx = -1;
+    let hasScrolledSinceStep = false, readyToAdvance = false, pauseTimer = null, bounceIgnoreUntil = 0;
+    let pendingWords = null, lockedRange = null;
 
     const homeView = document.getElementById('home-view');
     const noteView = document.getElementById('note-view');
@@ -537,11 +298,7 @@ Interstellar</div>
     const pullIndicator = document.getElementById('pull-indicator');
     const pullSpinner = document.getElementById('pull-spinner');
 
-    function getFormattedTime() {
-      const now = new Date();
-      return now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    }
-    const baseTimeStr = `Edited ${getFormattedTime()}`;
+    const baseTimeStr = `Edited ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
     editedStamp.textContent = baseTimeStr;
 
     const rowNodes = [];
@@ -555,29 +312,19 @@ Interstellar</div>
     wordListEl.appendChild(frag);
 
     function applyWordList(newWords, preserveViewport) {
-      currentWords = newWords;
-
       if (!preserveViewport) {
-        pendingWords = null;
-        lockedRange = null;
-        for (let i = 0; i < TOTAL_ROWS; i++) {
-          rowNodes[i].textContent = currentWords[i];
-        }
+        pendingWords = lockedRange = null;
+        for (let i = 0; i < TOTAL_ROWS; i++) rowNodes[i].textContent = newWords[i];
         return;
       }
-
       const scrollTop = Math.max(0, scrollArea.scrollTop - 52);
       const viewHeight = scrollArea.clientHeight || 700;
       const firstVis = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - 3);
       const lastVis = Math.min(TOTAL_ROWS - 1, Math.ceil((scrollTop + viewHeight) / ROW_HEIGHT) + 3);
-
       lockedRange = [firstVis, lastVis];
       pendingWords = newWords;
-
       for (let i = 0; i < TOTAL_ROWS; i++) {
-        if (i < firstVis || i > lastVis) {
-          rowNodes[i].textContent = newWords[i];
-        }
+        if (i < firstVis || i > lastVis) rowNodes[i].textContent = newWords[i];
       }
     }
 
@@ -587,14 +334,10 @@ Interstellar</div>
       const viewHeight = scrollArea.clientHeight || 700;
       const visStart = Math.floor(scrollTop / ROW_HEIGHT);
       const visEnd = Math.ceil((scrollTop + viewHeight) / ROW_HEIGHT);
-
       const [lockStart, lockEnd] = lockedRange;
       if (visEnd < lockStart - 2 || visStart > lockEnd + 2) {
-        for (let i = lockStart; i <= lockEnd; i++) {
-          rowNodes[i].textContent = pendingWords[i];
-        }
-        pendingWords = null;
-        lockedRange = null;
+        for (let i = lockStart; i <= lockEnd; i++) rowNodes[i].textContent = pendingWords[i];
+        pendingWords = lockedRange = null;
       }
     }
 
@@ -607,48 +350,28 @@ Interstellar</div>
     });
 
     function openWordNote() {
-      const raw = searchInput.value.trim();
-      const cleaned = raw.replace(/[^a-zA-Z]/g, '').toUpperCase();
-      if (cleaned.length > 0) {
-        targetName = cleaned;
-      }
-
+      const cleaned = searchInput.value.trim().replace(/[^a-zA-Z]/g, '').toUpperCase();
+      if (cleaned.length) targetName = cleaned;
       searchInput.value = '';
-      document.querySelectorAll('#others-grid .note-card').forEach(card => {
-        card.style.display = 'flex';
-      });
-
+        document.querySelectorAll('#others-grid .note-card').forEach(c => c.style.display = 'flex');
       setArmedState(false, false);
       scrollArea.scrollTop = 0;
-
       homeView.style.display = 'none';
       noteView.style.display = 'flex';
     }
 
     document.getElementById('open-word-note').addEventListener('click', openWordNote);
     document.getElementById('fab-open').addEventListener('click', openWordNote);
-
     document.getElementById('btn-back').addEventListener('click', () => {
       clearTimeout(pauseTimer);
       noteView.style.display = 'none';
       homeView.style.display = 'flex';
     });
 
-    function updateVisualCue() {
-      if (isArmed) {
-        document.body.classList.add('is-armed');
-        editedStamp.textContent = baseTimeStr + '.';
-      } else {
-        document.body.classList.remove('is-armed');
-        editedStamp.textContent = baseTimeStr;
-      }
-    }
-
     function setArmedState(arm, preserveViewport = true) {
       clearTimeout(pauseTimer);
       hasScrolledSinceStep = false;
-
-      if (arm && targetName.length > 0) {
+      if (arm && targetName.length) {
         isArmed = true;
         letterIdx = -1;
         readyToAdvance = true;
@@ -658,21 +381,17 @@ Interstellar</div>
         letterIdx = -1;
         readyToAdvance = false;
         bounceIgnoreUntil = 0;
-        const normalList = buildCycleList(NORMAL_POOL, TOTAL_ROWS);
-        applyWordList(normalList, preserveViewport);
+        applyWordList(buildCycleList(NORMAL_POOL, TOTAL_ROWS), preserveViewport);
       }
-
-      updateVisualCue();
+      document.body.classList.toggle('is-armed', isArmed);
+      editedStamp.textContent = isArmed ? baseTimeStr + '.' : baseTimeStr;
     }
 
     function advanceStep() {
       if (!isArmed) return;
-
       if (letterIdx < targetName.length - 1) {
         letterIdx++;
-        const nextLetter = targetName[letterIdx];
-        const pool = buildCycleList(BUCKETS[nextLetter], TOTAL_ROWS);
-        applyWordList(pool, true);
+        applyWordList(buildCycleList(BUCKETS[targetName[letterIdx]], TOTAL_ROWS), true);
       } else {
         setArmedState(false, true);
       }
@@ -680,40 +399,25 @@ Interstellar</div>
 
     scrollArea.addEventListener('scroll', () => {
       flushLockedRowsIfOffscreen();
-
       if (!isArmed) return;
-
-      if (letterIdx === -1 && (Date.now() < bounceIgnoreUntil || scrollArea.scrollTop <= 24)) {
-        return;
-      }
-
+      if (letterIdx === -1 && (Date.now() < bounceIgnoreUntil || scrollArea.scrollTop <= 24)) return;
       if (readyToAdvance) {
         readyToAdvance = false;
         hasScrolledSinceStep = false;
         advanceStep();
         if (!isArmed) return;
       }
-
       hasScrolledSinceStep = true;
       clearTimeout(pauseTimer);
-
       pauseTimer = setTimeout(() => {
-        if (isArmed && hasScrolledSinceStep) {
-          readyToAdvance = true;
-        }
+        if (isArmed && hasScrolledSinceStep) readyToAdvance = true;
       }, PAUSE_MS);
     }, { passive: true });
 
-    let pullStartY = 0;
-    let isPullingTop = false;
-    let pullDistance = 0;
-    const PULL_THRESHOLD = 72;
-
-    scrollArea.addEventListener('touchstart', (e) => {
+    let pullStartY = 0, isPullingTop = false, pullDistance = 0;
+    scrollArea.addEventListener('touchstart', e => {
       if (e.touches.length !== 1) return;
-      if (isArmed && letterIdx === -1) {
-        bounceIgnoreUntil = 0;
-      }
+      if (isArmed && letterIdx === -1) bounceIgnoreUntil = 0;
       if (scrollArea.scrollTop <= 0) {
         pullStartY = e.touches[0].clientY;
         isPullingTop = true;
@@ -723,14 +427,13 @@ Interstellar</div>
       }
     }, { passive: true });
 
-    scrollArea.addEventListener('touchmove', (e) => {
+    scrollArea.addEventListener('touchmove', e => {
       if (!isPullingTop) return;
       if (scrollArea.scrollTop > 0) {
         isPullingTop = false;
         pullIndicator.style.opacity = '0';
         return;
       }
-
       const dy = e.touches[0].clientY - pullStartY;
       if (dy > 8) {
         pullDistance = Math.min(dy * 0.5, 95);
@@ -746,13 +449,9 @@ Interstellar</div>
     scrollArea.addEventListener('touchend', () => {
       if (!isPullingTop) return;
       isPullingTop = false;
-
       pullIndicator.style.opacity = '0';
       pullIndicator.style.transform = 'translate(-50%, -44px)';
-
-      if (!isArmed && pullDistance >= PULL_THRESHOLD / 2) {
-        setArmedState(true, true);
-      }
+      if (!isArmed && pullDistance >= 36) setArmedState(true, true);
       pullDistance = 0;
     });
 
@@ -760,3 +459,4 @@ Interstellar</div>
   </script>
 </body>
 </html>
+ 
